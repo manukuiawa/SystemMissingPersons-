@@ -8,6 +8,10 @@ public class Register {
 	private Date dateReport;
 	private StatusRegister statusRegister;
 	private int idPeople;
+	
+	public Register() {
+		
+	}
 
 	public Register(int idRegister, Date dateReport, StatusRegister statusRegister, int idPeople) {
 		super();
