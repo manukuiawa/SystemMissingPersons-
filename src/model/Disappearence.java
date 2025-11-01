@@ -12,13 +12,14 @@ public class Disappearence {
 	private String contextDisappearence;
 	private String clothesDisappearence;
 	private int idPeople;
-	private int idCommunicant; 
+	private int idCommunicant;
 
 	public Disappearence() {
 	}
 
 	public Disappearence(int idDisappearence, LocalDate dateDisappearence, LocalTime hourDisappearence, String location,
 			String contextDisappearence, String clothesDisappearence, int idPeople, int idCommunicant) {
+		super();
 		this.idDisappearence = idDisappearence;
 		this.dateDisappearence = dateDisappearence;
 		this.hourDisappearence = hourDisappearence;
