@@ -14,11 +14,9 @@ public class Disappearence {
 	private int idPeople;
 	private int idCommunicant; 
 
-	// Construtor vazio
 	public Disappearence() {
 	}
 
-	// Construtor completo
 	public Disappearence(int idDisappearence, LocalDate dateDisappearence, LocalTime hourDisappearence, String location,
 			String contextDisappearence, String clothesDisappearence, int idPeople, int idCommunicant) {
 		this.idDisappearence = idDisappearence;
