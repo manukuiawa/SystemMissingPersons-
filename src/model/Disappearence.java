@@ -12,13 +12,12 @@ public class Disappearence {
 	private String contextDisappearence;
 	private String clothesDisappearence;
 	private int idPeople;
-	private int idCommunicant;
 
 	public Disappearence() {
 	}
 
 	public Disappearence(int idDisappearence, LocalDate dateDisappearence, LocalTime hourDisappearence, String location,
-			String contextDisappearence, String clothesDisappearence, int idPeople, int idCommunicant) {
+			String contextDisappearence, String clothesDisappearence, int idPeople) {
 		super();
 		this.idDisappearence = idDisappearence;
 		this.dateDisappearence = dateDisappearence;
@@ -27,7 +26,6 @@ public class Disappearence {
 		this.contextDisappearence = contextDisappearence;
 		this.clothesDisappearence = clothesDisappearence;
 		this.idPeople = idPeople;
-		this.idCommunicant = idCommunicant;
 	}
 
 	public int getIdDisappearence() {
@@ -86,18 +84,10 @@ public class Disappearence {
 		this.idPeople = idPeople;
 	}
 
-	public int getIdCommunicant() {
-		return idCommunicant;
-	}
-
-	public void setIdCommunicant(int idCommunicant) {
-		this.idCommunicant = idCommunicant;
-	}
-
 	@Override
 	public String toString() {
 		return "Disappearence [id=" + idDisappearence + ", date=" + dateDisappearence + ", hour=" + hourDisappearence
 				+ ", location=" + location + ", context=" + contextDisappearence + ", clothes=" + clothesDisappearence
-				+ ", idPeople=" + idPeople + ", idCommunicant=" + idCommunicant + "]";
+				+ ", idPeople=" + idPeople + "]";
 	}
 }
