@@ -1,8 +1,8 @@
 package model;
 
 public class People {
-	private int idPeople;
-	private String name;
+	private int id_peoples;
+	private String personName;
 	private int age;
 	private String gender;
 	private String CPF;
@@ -10,29 +10,29 @@ public class People {
 	public People() {
 	}
 
-	public People(int idPeople, String name, int age, String gender, String cPF) {
+	public People(int id_peoples, String personName, int age, String gender, String cPF) {
 		super();
-		this.idPeople = idPeople;
-		this.name = name;
+		this.id_peoples = id_peoples;
+		this.personName = personName;
 		this.age = age;
 		this.gender = gender;
 		CPF = cPF;
 	}
 
-	public int getIdPeople() {
-		return idPeople;
+	public int getId_peoples() {
+		return id_peoples;
 	}
 
-	public void setIdPeople(int idPeople) {
-		this.idPeople = idPeople;
+	public void setId_peoples(int id_peoples) {
+		this.id_peoples = id_peoples;
 	}
 
-	public String getName() {
-		return name;
+	public String getPersonName() {
+		return personName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPersonName(String personName) {
+		this.personName = personName;
 	}
 
 	public int getAge() {
@@ -55,13 +55,14 @@ public class People {
 		return CPF;
 	}
 
-	public void setCPF(String CPF) {
-		this.CPF = CPF;
+	public void setCPF(String cPF) {
+		CPF = cPF;
 	}
 
 	@Override
 	public String toString() {
-		return "People [idPeople=" + idPeople + ", name=" + name + ", age=" + age + ", gender=" + gender + ", CPF="
-				+ CPF + "]";
+		return "People [id_peoples=" + id_peoples + ", personName=" + personName + ", age=" + age + ", gender=" + gender
+				+ ", CPF=" + CPF + "]";
 	}
+
 }

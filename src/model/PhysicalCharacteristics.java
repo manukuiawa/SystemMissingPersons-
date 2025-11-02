@@ -1,7 +1,7 @@
 package model;
 
 public class PhysicalCharacteristics {
-	private int idCharacteristics;
+	private int id_characteristics;
 	private double height;
 	private double weight;
 	private String hairColor;
@@ -17,7 +17,7 @@ public class PhysicalCharacteristics {
 	public PhysicalCharacteristics(int idCharacteristics, double height, double weight, String hairColor,
 			String eyesColor, String signs, int idPeople, String url) {
 		super();
-		this.idCharacteristics = idCharacteristics;
+		this.id_characteristics = idCharacteristics;
 		this.height = height;
 		this.weight = weight;
 		this.hairColor = hairColor;
@@ -28,11 +28,11 @@ public class PhysicalCharacteristics {
 	}
 
 	public int getIdCharacteristics() {
-		return idCharacteristics;
+		return id_characteristics;
 	}
 
 	public void setIdCharacteristics(int idCharacteristics) {
-		this.idCharacteristics = idCharacteristics;
+		this.id_characteristics = idCharacteristics;
 	}
 
 	public double getHeight() {
@@ -93,7 +93,7 @@ public class PhysicalCharacteristics {
 
 	@Override
 	public String toString() {
-		return "PhysicalCharacteristics [idCharacteristics=" + idCharacteristics + ", height=" + height + ", weight="
+		return "PhysicalCharacteristics [id_characteristics=" + id_characteristics + ", height=" + height + ", weight="
 				+ weight + ", hairColor=" + hairColor + ", eyesColor=" + eyesColor + ", signs=" + signs + ", idPeople="
 				+ idPeople + ", url=" + url + "]";
 	}

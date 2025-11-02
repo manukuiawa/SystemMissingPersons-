@@ -2,7 +2,7 @@ package model;
 
 public class Communicant {
 
-	private int idCommunicant;
+	private int id_Communicant;
 	private String cellphone;
 	private String kinship;
 
@@ -12,17 +12,17 @@ public class Communicant {
 
 	public Communicant(int idCommunicant, String cellphone, String kinship) {
 		super();
-		this.idCommunicant = idCommunicant;
+		this.id_Communicant = idCommunicant;
 		this.cellphone = cellphone;
 		this.kinship = kinship;
 	}
 
 	public int getIdCommunicant() {
-		return idCommunicant;
+		return id_Communicant;
 	}
 
 	public void setIdCommunicant(int idCommunicant) {
-		this.idCommunicant = idCommunicant;
+		this.id_Communicant = idCommunicant;
 	}
 
 	public String getCellphone() {
@@ -43,7 +43,7 @@ public class Communicant {
 
 	@Override
 	public String toString() {
-		return "Communicant [idCommunicant=" + idCommunicant + ", cellphone=" + cellphone + ", kinship=" + kinship
+		return "Communicant [idCommunicant=" + id_Communicant + ", cellphone=" + cellphone + ", kinship=" + kinship
 				+ "]";
 	}
 

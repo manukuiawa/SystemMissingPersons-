@@ -2,38 +2,38 @@ package model;
 
 public class RegisterCommunicant {
 
-	private int idRegister;
-	private int idCommunicant;
+	private int id_register;
+	private int i_communicant;
 
 	public RegisterCommunicant() {
 
 	}
 
-	public RegisterCommunicant(int idRegister, int idCommunicant) {
+	public RegisterCommunicant(int id_register, int i_communicant) {
 		super();
-		this.idRegister = idRegister;
-		this.idCommunicant = idCommunicant;
+		this.id_register = id_register;
+		this.i_communicant = i_communicant;
 	}
 
-	public int getIdRegister() {
-		return idRegister;
+	public int getId_register() {
+		return id_register;
 	}
 
-	public void setIdRegister(int idRegister) {
-		this.idRegister = idRegister;
+	public void setId_register(int id_register) {
+		this.id_register = id_register;
 	}
 
-	public int getIdCommunicant() {
-		return idCommunicant;
+	public int getI_communicant() {
+		return i_communicant;
 	}
 
-	public void setIdCommunicant(int idCommunicant) {
-		this.idCommunicant = idCommunicant;
+	public void setI_communicant(int i_communicant) {
+		this.i_communicant = i_communicant;
 	}
 
 	@Override
 	public String toString() {
-		return "RegisterCommunicant [idRegister=" + idRegister + ", idCommunicant=" + idCommunicant + "]";
+		return "RegisterCommunicant [id_register=" + id_register + ", i_communicant=" + i_communicant + "]";
 	}
 
 }

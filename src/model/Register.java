@@ -4,29 +4,29 @@ import java.sql.Date;
 
 public class Register {
 
-	private int idRegister;
+	private int id_register;
 	private Date dateReport;
 	private StatusRegister statusRegister;
 	private int idPeople;
-	
+
 	public Register() {
-		
+
 	}
 
 	public Register(int idRegister, Date dateReport, StatusRegister statusRegister, int idPeople) {
 		super();
-		this.idRegister = idRegister;
+		this.id_register = idRegister;
 		this.dateReport = dateReport;
 		this.statusRegister = statusRegister;
 		this.idPeople = idPeople;
 	}
 
 	public int getIdRegister() {
-		return idRegister;
+		return id_register;
 	}
 
 	public void setIdRegister(int idRegister) {
-		this.idRegister = idRegister;
+		this.id_register = idRegister;
 	}
 
 	public Date getDateReport() {
@@ -55,7 +55,7 @@ public class Register {
 
 	@Override
 	public String toString() {
-		return "Register [idRegister=" + idRegister + ", dateReport=" + dateReport + ", statusRegister="
+		return "Register [idRegister=" + id_register + ", dateReport=" + dateReport + ", statusRegister="
 				+ statusRegister + ", idPeople=" + idPeople + "]";
 	}
 

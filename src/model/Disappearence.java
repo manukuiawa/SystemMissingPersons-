@@ -5,35 +5,35 @@ import java.time.LocalTime;
 
 public class Disappearence {
 
-	private int idDisappearence;
+	private int id_disappearence;
 	private LocalDate dateDisappearence;
 	private LocalTime hourDisappearence;
 	private String location;
 	private String contextDisappearence;
 	private String clothesDisappearence;
-	private int idPeople;
+	private int id_peoples;
 
 	public Disappearence() {
 	}
 
-	public Disappearence(int idDisappearence, LocalDate dateDisappearence, LocalTime hourDisappearence, String location,
-			String contextDisappearence, String clothesDisappearence, int idPeople) {
+	public Disappearence(int id_disappearence, LocalDate dateDisappearence, LocalTime hourDisappearence,
+			String location, String contextDisappearence, String clothesDisappearence, int id_peoples) {
 		super();
-		this.idDisappearence = idDisappearence;
+		this.id_disappearence = id_disappearence;
 		this.dateDisappearence = dateDisappearence;
 		this.hourDisappearence = hourDisappearence;
 		this.location = location;
 		this.contextDisappearence = contextDisappearence;
 		this.clothesDisappearence = clothesDisappearence;
-		this.idPeople = idPeople;
+		this.id_peoples = id_peoples;
 	}
 
-	public int getIdDisappearence() {
-		return idDisappearence;
+	public int getId_disappearence() {
+		return id_disappearence;
 	}
 
-	public void setIdDisappearence(int idDisappearence) {
-		this.idDisappearence = idDisappearence;
+	public void setId_disappearence(int id_disappearence) {
+		this.id_disappearence = id_disappearence;
 	}
 
 	public LocalDate getDateDisappearence() {
@@ -76,18 +76,20 @@ public class Disappearence {
 		this.clothesDisappearence = clothesDisappearence;
 	}
 
-	public int getIdPeople() {
-		return idPeople;
+	public int getId_peoples() {
+		return id_peoples;
 	}
 
-	public void setIdPeople(int idPeople) {
-		this.idPeople = idPeople;
+	public void setId_peoples(int id_peoples) {
+		this.id_peoples = id_peoples;
 	}
 
 	@Override
 	public String toString() {
-		return "Disappearence [id=" + idDisappearence + ", date=" + dateDisappearence + ", hour=" + hourDisappearence
-				+ ", location=" + location + ", context=" + contextDisappearence + ", clothes=" + clothesDisappearence
-				+ ", idPeople=" + idPeople + "]";
+		return "Disappearence [id_disappearence=" + id_disappearence + ", dateDisappearence=" + dateDisappearence
+				+ ", hourDisappearence=" + hourDisappearence + ", location=" + location + ", contextDisappearence="
+				+ contextDisappearence + ", clothesDisappearence=" + clothesDisappearence + ", id_peoples=" + id_peoples
+				+ "]";
 	}
+
 }
