@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -78,36 +79,43 @@ public class RegisterPerson extends JFrame {
 		lineOne.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
 		personalPanel.add(lineOne); 
 		personalPanel.add(Box.createVerticalStrut(15));
-		setVisible(true);
 		
-		//Inputs 
-		JTextField nomeField = new JTextField(15) {
-		    @Override
-		    protected void paintComponent(Graphics g) {
-		        super.paintComponent(g);
-		        // Placeholder
-		        if (getText().isEmpty()) {
-		            Graphics2D g2 = (Graphics2D) g.create();
-		            g2.setFont(getFont().deriveFont(Font.ITALIC));
-		            g2.setColor(Color.GRAY);
-		            g2.drawString("Nome completo", 10, getHeight() / 2 + 5);
-		            g2.dispose();
-		        }
-		    }
-		};
+		// ==== PARTE DO INPUT (Nome) ====
+		JPanel nomePanel = new JPanel();
+		nomePanel.setBackground(new Color(33, 43, 54));
+		nomePanel.setLayout(new BoxLayout(nomePanel, BoxLayout.Y_AXIS));
+		nomePanel.setAlignmentX(Component.LEFT_ALIGNMENT); 
+		nomePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); // sem margens extras
+
+		// Label
+		JLabel nomeLabel = new JLabel("Nome completo:");
+		nomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
+		nomeLabel.setForeground(Color.WHITE);
+		nomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		nomeLabel.setMaximumSize(new Dimension(250, 20)); // largura igual ao input
+		nomePanel.add(nomeLabel);
+		nomePanel.add(Box.createVerticalStrut(5)); // espacinho entre label e input
+
+		// Input
+		JTextField nomeField = new JTextField();
 		nomeField.setFont(new Font("Arial", Font.PLAIN, 14));
 		nomeField.setForeground(Color.WHITE);
 		nomeField.setBackground(new Color(33, 43, 54));
+		nomeField.setCaretColor(Color.WHITE);
 		nomeField.setBorder(BorderFactory.createCompoundBorder(
-		        new LineBorder(new Color(70, 130, 180), 2, true), // borda arredondada azul
-		        BorderFactory.createEmptyBorder(8, 10, 8, 10)
+		        new LineBorder(new Color(70, 130, 180), 2, true),
+		        BorderFactory.createEmptyBorder(5, 10, 5, 10)
 		));
+		nomeField.setMaximumSize(new Dimension(250, 30)); // mesmo tamanho do label
+		nomeField.setAlignmentX(Component.LEFT_ALIGNMENT);
+		nomePanel.add(nomeField);
 
-		
-		
-		
+		// adiciona ao painel principal
+		personalPanel.add(Box.createVerticalStrut(15)); // espaço entre os campos
+		personalPanel.add(nomePanel);
+
+		setVisible(true);
 	}
-	
 	public static void main(String[] args) {
         new RegisterPerson();
     }
