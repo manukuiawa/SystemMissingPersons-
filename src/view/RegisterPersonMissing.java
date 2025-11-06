@@ -20,6 +20,7 @@ public class RegisterPersonMissing {
 	private JFrame frame;
 	private JTextField inputName;
 	private JTextField inputAge;
+	private JTextField inputLocalDesaparecido;
 
 	/**
 	 * Launch the application.
@@ -73,7 +74,7 @@ public class RegisterPersonMissing {
 		
 		JSeparator lineSeparator = new JSeparator();
 		lineSeparator.setForeground(new Color(255, 255, 255, 80));
-		lineSeparator.setBounds(26, 108, 326, 1);
+		lineSeparator.setBounds(26, 108, 274, 1);
 		frame.getContentPane().add(lineSeparator);
 		
 		JLabel LabelName = new JLabel("Nome Completo:");
@@ -86,7 +87,7 @@ public class RegisterPersonMissing {
 		inputName = new JTextField();
 		inputName.setFont(new Font("Arial", Font.PLAIN, 14));
 		inputName.setBackground(new Color(140, 140, 140));
-		inputName.setBounds(26, 164, 315, 22);
+		inputName.setBounds(26, 164, 274, 22);
 		frame.getContentPane().add(inputName);
 		inputName.setColumns(10);
 		inputName.setBorder(BorderFactory.createLineBorder(new Color(99,187,242), 1, true));
@@ -103,19 +104,19 @@ public class RegisterPersonMissing {
 		inputAge.setColumns(10);
 		inputAge.setBorder(BorderFactory.createLineBorder(new Color(99,187,242), 1, true));
 		inputAge.setBackground(new Color(140, 140, 140));
-		inputAge.setBounds(26, 245, 148, 22);
+		inputAge.setBounds(26, 245, 113, 22);
 		frame.getContentPane().add(inputAge);
 		
 		JLabel labelSexo = new JLabel("Sexo:");
 		labelSexo.setForeground(Color.WHITE);
 		labelSexo.setFont(new Font("Arial", Font.PLAIN, 13));
 		labelSexo.setBackground(Color.WHITE);
-		labelSexo.setBounds(203, 216, 113, 16);
+		labelSexo.setBounds(166, 216, 113, 16);
 		frame.getContentPane().add(labelSexo);
 		
 		JComboBox inputSexo = new JComboBox();
 		inputSexo.setModel(new DefaultComboBoxModel(new String[] {"Selecione a Opção", "Feminino ", "Masculino ", "Outro"}));
-		inputSexo.setBounds(203, 243, 138, 24);
+		inputSexo.setBounds(166, 244, 134, 24);
 		frame.getContentPane().add(inputSexo);
 		
 		JLabel labelCPF = new JLabel("CPF:");
@@ -127,7 +128,7 @@ public class RegisterPersonMissing {
 		
 		JFormattedTextField inputCPF = new JFormattedTextField();
 		inputCPF.setText("000.000.000-00");
-		inputCPF.setBounds(26, 325, 315, 22);
+		inputCPF.setBounds(26, 325, 274, 22);
 		frame.getContentPane().add(inputCPF);
 		
 		JLabel labelEndereco = new JLabel("Endereço:");
@@ -137,9 +138,83 @@ public class RegisterPersonMissing {
 		labelEndereco.setBounds(26, 376, 113, 16);
 		frame.getContentPane().add(labelEndereco);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(26, 409, 315, 65);
-		frame.getContentPane().add(textArea);
+		JTextArea inputEndereco = new JTextArea();
+		inputEndereco.setBounds(26, 409, 274, 65);
+		frame.getContentPane().add(inputEndereco);
+		
+		JLabel lblInformaesDoDesaparecimento = new JLabel("Informações do Desaparecimento");
+		lblInformaesDoDesaparecimento.setForeground(new Color(4, 85, 191));
+		lblInformaesDoDesaparecimento.setFont(new Font("Arial", Font.BOLD, 15));
+		lblInformaesDoDesaparecimento.setBounds(336, 75, 302, 24);
+		frame.getContentPane().add(lblInformaesDoDesaparecimento);
+		
+		JSeparator lineSeparator_1 = new JSeparator();
+		lineSeparator_1.setForeground(new Color(255, 255, 255, 80));
+		lineSeparator_1.setBounds(336, 108, 315, 1);
+		frame.getContentPane().add(lineSeparator_1);
+		
+		JLabel LabelDataDesaparecimento = new JLabel("Data do Desaparecimento:");
+		LabelDataDesaparecimento.setForeground(Color.WHITE);
+		LabelDataDesaparecimento.setFont(new Font("Arial", Font.PLAIN, 13));
+		LabelDataDesaparecimento.setBackground(Color.WHITE);
+		LabelDataDesaparecimento.setBounds(336, 138, 165, 17);
+		frame.getContentPane().add(LabelDataDesaparecimento);
+		
+		JFormattedTextField inputDataDesaparecimento = new JFormattedTextField();
+		inputDataDesaparecimento.setText("dd/mm/aaaa");
+		inputDataDesaparecimento.setBounds(336, 165, 159, 22);
+		frame.getContentPane().add(inputDataDesaparecimento);
+		
+		JLabel labelHorario = new JLabel("Horário: ");
+		labelHorario.setForeground(Color.WHITE);
+		labelHorario.setFont(new Font("Arial", Font.PLAIN, 13));
+		labelHorario.setBackground(Color.WHITE);
+		labelHorario.setBounds(523, 138, 165, 17);
+		frame.getContentPane().add(labelHorario);
+		
+		JFormattedTextField inputHorarioDesaparecimento = new JFormattedTextField();
+		inputHorarioDesaparecimento.setText("--:--");
+		inputHorarioDesaparecimento.setBounds(523, 165, 165, 22);
+		frame.getContentPane().add(inputHorarioDesaparecimento);
+		
+		JLabel LabelLocaalDesaparecido = new JLabel("Local do Desaparecimento");
+		LabelLocaalDesaparecido.setForeground(Color.WHITE);
+		LabelLocaalDesaparecido.setFont(new Font("Arial", Font.PLAIN, 13));
+		LabelLocaalDesaparecido.setBackground(Color.WHITE);
+		LabelLocaalDesaparecido.setBounds(336, 218, 165, 17);
+		frame.getContentPane().add(LabelLocaalDesaparecido);
+		
+		inputLocalDesaparecido = new JTextField();
+		inputLocalDesaparecido.setFont(new Font("Arial", Font.PLAIN, 14));
+		inputLocalDesaparecido.setColumns(10);
+		inputLocalDesaparecido.setBorder(BorderFactory.createLineBorder(new Color(99,187,242), 1, true));
+		inputLocalDesaparecido.setBackground(new Color(140, 140, 140));
+		inputLocalDesaparecido.setBounds(336, 247, 352, 22);
+		frame.getContentPane().add(inputLocalDesaparecido);
+		
+		JLabel labelRegião = new JLabel("Região: ");
+		labelRegião.setForeground(Color.WHITE);
+		labelRegião.setFont(new Font("Arial", Font.PLAIN, 13));
+		labelRegião.setBackground(Color.WHITE);
+		labelRegião.setBounds(336, 298, 113, 16);
+		frame.getContentPane().add(labelRegião);
+		
+		JComboBox inputSexo_1 = new JComboBox();
+		inputSexo_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione a Opção: ", "Centro ", "Norte", "Sul", "Leste", "Oeste"}));
+		inputSexo_1.setBounds(336, 325, 352, 24);
+		frame.getContentPane().add(inputSexo_1);
+		
+		JLabel lblCircunstncias = new JLabel("Circunstâncias:");
+		lblCircunstncias.setForeground(Color.WHITE);
+		lblCircunstncias.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblCircunstncias.setBackground(Color.WHITE);
+		lblCircunstncias.setBounds(336, 378, 113, 16);
+		frame.getContentPane().add(lblCircunstncias);
+		
+		JFormattedTextField inputCircunstancias = new JFormattedTextField();
+		inputCircunstancias.setText("Descreva as Circunstâncias do Desaparecimento");
+		inputCircunstancias.setBounds(336, 412, 352, 62);
+		frame.getContentPane().add(inputCircunstancias);
 
 	
 	
