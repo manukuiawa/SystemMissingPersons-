@@ -128,7 +128,7 @@ public class RegisterPersonMissing {
 		inputSexo.setBounds(149, 181, 134, 24);
 		frame.getContentPane().add(inputSexo);
 		inputSexo.setBorder(BorderFactory.createLineBorder(new Color(99, 187, 242), 1, true));
-		inputSexo.setBackground(new Color(10, 46, 66));
+		inputSexo.setBackground(new Color(0, 128, 192));
 
 		JLabel labelCPF = new JLabel("CPF:");
 		labelCPF.setForeground(Color.WHITE);
@@ -229,7 +229,7 @@ public class RegisterPersonMissing {
 				new String[] { "Selecione a Opção: ", "Centro ", "Norte", "Sul", "Leste", "Oeste" }));
 		inputRegiao.setBounds(336, 242, 352, 24);
 		inputRegiao.setBorder(BorderFactory.createLineBorder(new Color(99, 187, 242), 1, true));
-		inputRegiao.setBackground(new Color(10, 46, 66));
+		inputRegiao.setBackground(new Color(0, 128, 192));
 		frame.getContentPane().add(inputRegiao);
 
 		JLabel labelCircunstancias = new JLabel("Circunstâncias:");
@@ -296,7 +296,7 @@ public class RegisterPersonMissing {
 		inputCordoCabelo.setModel(new DefaultComboBoxModel(
 				new String[] { "Selecione a Opção: ", "Loiro ", "Castanho", "Preto", "Ruivo ", "Grisalho", "Careca" }));
 		inputCordoCabelo.setBounds(334, 461, 177, 24);
-		inputCordoCabelo.setBackground(new Color(10, 46, 66));
+		inputCordoCabelo.setBackground(new Color(0, 128, 192));
 		inputCordoCabelo.setBorder(BorderFactory.createLineBorder(new Color(99, 187, 242), 1, true));
 		frame.getContentPane().add(inputCordoCabelo);
 
@@ -320,7 +320,7 @@ public class RegisterPersonMissing {
 				new String[] { "Selecione a Opção: ", "Castanhos ", "Azuis", "Verdes", "Pretos", "Mel " }));
 		inputCordosOlhos.setBounds(523, 461, 165, 24);
 		inputCordosOlhos.setBorder(BorderFactory.createLineBorder(new Color(99, 187, 242), 1, true));
-		inputCordosOlhos.setBackground(new Color(10, 46, 66));
+		inputCordosOlhos.setBackground(new Color(0, 128, 192));
 		frame.getContentPane().add(inputCordosOlhos);
 
 		JLabel labelRoupasNoDesaparecimento = new JLabel("Roupas no Desaparecimento: ");
@@ -408,7 +408,7 @@ public class RegisterPersonMissing {
 				"Filho(a)", "Cônjuge", "Irmão(a)", "Amigo(a)", "Outro" }));
 		inputParentesco.setBounds(481, 662, 196, 21);
 		inputParentesco.setBorder(BorderFactory.createLineBorder(new Color(99,187,242), 1));
-		inputParentesco.setBackground(new Color(10, 46, 66));
+		inputParentesco.setBackground(new Color(0, 128, 192));
 		frame.getContentPane().add(inputParentesco);
 
 		JButton btnCancelar = new JButton("Cancelar");
