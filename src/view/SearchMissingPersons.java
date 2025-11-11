@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -118,110 +117,106 @@ public class SearchMissingPersons {
 		mainPanel.setBackground(new Color(17, 24, 38));
 		mainPanel.setBounds(260, 0, 1040, 750);
 		frame.getContentPane().add(mainPanel);
-		
-		 JPanel header = new JPanel(new BorderLayout());
-	        header.setBackground(new Color(17, 24, 38));
-	        header.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
 
-	        JLabel lblTitulo = new JLabel("Busca Avançada por Características");
-	        lblTitulo.setForeground(Color.WHITE);
-	        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
-	        header.add(lblTitulo, BorderLayout.WEST);
-	        
+		JPanel header = new JPanel(new BorderLayout());
+		header.setBackground(new Color(17, 24, 38));
+		header.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
 
-	        // ===== Conteúdo Principal =====
-	        JPanel conteudo = new JPanel();
-	        conteudo.setBackground(new Color(17, 24, 38));
-	        conteudo.setLayout(new BoxLayout(conteudo, BoxLayout.Y_AXIS));
-	        conteudo.setBorder(BorderFactory.createEmptyBorder(10, 25, 20, 25));
+		JLabel lblTitulo = new JLabel("Busca Avançada por Características");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		header.add(lblTitulo, BorderLayout.WEST);
 
-	        // ===== Card de Filtros =====
-	        JPanel filtroCard = new JPanel();
-	        filtroCard.setBackground(new Color(33, 43, 54));
-	        filtroCard.setLayout(new BoxLayout(filtroCard, BoxLayout.Y_AXIS));
-	        filtroCard.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		JPanel conteudo = new JPanel();
+		conteudo.setBackground(new Color(17, 24, 38));
+		conteudo.setLayout(new BoxLayout(conteudo, BoxLayout.Y_AXIS));
+		conteudo.setBorder(BorderFactory.createEmptyBorder(10, 25, 20, 25));
 
-	        JLabel tituloFiltro = new JLabel("Busca Avançada");
-	        tituloFiltro.setForeground(Color.WHITE);
-	        tituloFiltro.setFont(new Font("Segoe UI", Font.BOLD, 16));
-	        filtroCard.add(tituloFiltro);
-	        filtroCard.add(Box.createVerticalStrut(10));
+		JPanel filtroCard = new JPanel();
+		filtroCard.setBackground(new Color(33, 43, 54));
+		filtroCard.setLayout(new BoxLayout(filtroCard, BoxLayout.Y_AXIS));
+		filtroCard.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-	        filtroCard.add(criarLinhaCampos(new String[]{"Altura", "Cor do Cabelo", "Cor dos Olhos"}));
-	        filtroCard.add(Box.createVerticalStrut(10));
-	        filtroCard.add(criarLinhaCampos(new String[]{"Tatuagens", "Cicatrizes", "Outros sinais"}));
-	        filtroCard.add(Box.createVerticalStrut(10));
-	        filtroCard.add(criarLinhaCampos(new String[]{"Cor da roupa", "Tipo de roupa", "Acessórios"}));
-	        filtroCard.add(Box.createVerticalStrut(15));
+		JLabel tituloFiltro = new JLabel("Busca Avançada");
+		tituloFiltro.setForeground(Color.WHITE);
+		tituloFiltro.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		filtroCard.add(tituloFiltro);
+		filtroCard.add(Box.createVerticalStrut(10));
 
-	        JPanel botoesBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
-	        botoesBusca.setBackground(new Color(33, 43, 54));
-	        JButton btnBuscar = criarBotaoTopo("Buscar", new Color(0, 123, 255));
-	        JButton btnLimpar = criarBotaoTopo("Limpar", new Color(80, 90, 100));
-	        botoesBusca.add(btnBuscar);
-	        botoesBusca.add(btnLimpar);
+		filtroCard.add(criarLinhaCampos(new String[] { "Altura", "Cor do Cabelo", "Cor dos Olhos" }));
+		filtroCard.add(Box.createVerticalStrut(20));
+		filtroCard.add(criarLinhaCampos(new String[] { "Tatuagens", "Cicatrizes", "Outros sinais" }));
+		filtroCard.add(Box.createVerticalStrut(20));
+		filtroCard.add(criarLinhaCampos(new String[] { "Cor da roupa", "Tipo de roupa", "Acessórios" }));
+		filtroCard.add(Box.createVerticalStrut(5));
 
-	        filtroCard.add(botoesBusca);
+		JPanel botoesBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
+		botoesBusca.setBackground(new Color(33, 43, 54));
+		JButton btnBuscar = criarBotaoTopo("Buscar", new Color(0, 123, 255));
+		JButton btnLimpar = criarBotaoTopo("Limpar", new Color(244, 45, 48));
+		botoesBusca.add(btnBuscar);
+		botoesBusca.add(btnLimpar);
 
-	        conteudo.add(filtroCard);
-	        conteudo.add(Box.createVerticalStrut(25));
+		filtroCard.add(botoesBusca);
 
-	        // ===== Card de Resultados =====
-	        JPanel resultadosCard = new JPanel(new BorderLayout());
-	        resultadosCard.setBackground(new Color(33, 43, 54));
-	        resultadosCard.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
+		conteudo.add(filtroCard);
+		conteudo.add(Box.createVerticalStrut(25));
 
-	        JLabel tituloResultados = new JLabel("Resultados da Busca");
-	        tituloResultados.setForeground(Color.WHITE);
-	        tituloResultados.setFont(new Font("Segoe UI", Font.BOLD, 16));
-	        resultadosCard.add(tituloResultados, BorderLayout.NORTH);
+		JPanel resultadosCard = new JPanel(new BorderLayout());
+		resultadosCard.setBackground(new Color(33, 43, 54));
+		resultadosCard.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
 
-	        JLabel iconeBusca = new JLabel("🔍", SwingConstants.CENTER);
-	        iconeBusca.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
-	        iconeBusca.setForeground(new Color(150, 150, 150));
+		JLabel tituloResultados = new JLabel("Resultados da Busca");
+		tituloResultados.setForeground(Color.WHITE);
+		tituloResultados.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		resultadosCard.add(tituloResultados, BorderLayout.NORTH);
 
-	        JLabel textoResultados = new JLabel("Utilize os filtros acima para realizar uma busca", SwingConstants.CENTER);
-	        textoResultados.setForeground(new Color(150, 150, 150));
-	        textoResultados.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		JLabel iconeBusca = new JLabel("🔍", SwingConstants.CENTER);
+		iconeBusca.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+		iconeBusca.setForeground(new Color(150, 150, 150));
 
-	        JPanel centro = new JPanel(new BorderLayout());
-	        centro.setOpaque(false);
-	        centro.add(iconeBusca, BorderLayout.CENTER);
-	        centro.add(textoResultados, BorderLayout.SOUTH);
-	        resultadosCard.add(centro, BorderLayout.CENTER);
+		JLabel textoResultados = new JLabel("Utilize os filtros acima para realizar uma busca", SwingConstants.CENTER);
+		textoResultados.setForeground(new Color(150, 150, 150));
+		textoResultados.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-	        conteudo.add(resultadosCard);
+		JPanel centro = new JPanel(new BorderLayout());
+		centro.setOpaque(false);
+		centro.add(iconeBusca, BorderLayout.CENTER);
+		centro.add(textoResultados, BorderLayout.SOUTH);
+		resultadosCard.add(centro, BorderLayout.CENTER);
 
-	        JScrollPane scroll = new JScrollPane(conteudo);
-	        scroll.setBorder(null);
-	        scroll.getVerticalScrollBar().setUnitIncrement(16);
-	        mainPanel.add(scroll, BorderLayout.CENTER);
-	    }
+		conteudo.add(resultadosCard);
 
-	    private JPanel criarLinhaCampos(String[] nomes) {
-	        JPanel linha = new JPanel(new GridLayout(1, nomes.length, 15, 0));
-	        linha.setBackground(new Color(26, 36, 46));
-
-	        for (String nome : nomes) {
-	            JTextField campo = new JTextField(nome);
-	            campo.setBackground(new Color(25, 35, 45));
-	            campo.setForeground(new Color(200, 200, 200));
-	            campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	            campo.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
-	            linha.add(campo);
-	        }
-	        return linha;
-	    }
-
-	    private JButton criarBotaoTopo(String texto, Color cor) {
-	        JButton btn = new JButton(texto);
-	        btn.setFocusPainted(false);
-	        btn.setBackground(cor);
-	        btn.setForeground(Color.WHITE);
-	        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
-	        btn.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
-	        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        return btn;
-	    }
-
+		JScrollPane scroll = new JScrollPane(conteudo);
+		scroll.setBorder(null);
+		scroll.getVerticalScrollBar().setUnitIncrement(16);
+		mainPanel.add(scroll, BorderLayout.CENTER);
 	}
+
+	private JPanel criarLinhaCampos(String[] nomes) {
+		JPanel linha = new JPanel(new GridLayout(1, nomes.length, 15, 0));
+		linha.setBackground(new Color(26, 36, 46));
+
+		for (String nome : nomes) {
+			JTextField campo = new JTextField(nome);
+			campo.setBackground(new Color(25, 35, 45));
+			campo.setForeground(new Color(200, 200, 200));
+			campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+			campo.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+			linha.add(campo);
+		}
+		return linha;
+	}
+
+	private JButton criarBotaoTopo(String texto, Color cor) {
+		JButton btn = new JButton(texto);
+		btn.setFocusPainted(false);
+		btn.setBackground(cor);
+		btn.setForeground(Color.WHITE);
+		btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		btn.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
+		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		return btn;
+	}
+
+}
