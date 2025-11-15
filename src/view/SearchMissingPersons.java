@@ -143,6 +143,7 @@ public class SearchMissingPersons {
 		filtroCard.add(tituloFiltro);
 		filtroCard.add(Box.createVerticalStrut(10));
 
+		//inputs
 		filtroCard.add(criarLinhaCampos(new String[] { "Altura", "Cor do Cabelo", "Cor dos Olhos" }));
 		filtroCard.add(Box.createVerticalStrut(20));
 		filtroCard.add(criarLinhaCampos(new String[] { "Tatuagens", "Cicatrizes", "Outros sinais" }));
