@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 public class Disappearence {
 
+	private Disappearence disappearence;
 	private int id_disappearence;
 	private LocalDate dateDisappearence;
 	private LocalTime hourDisappearence;
@@ -19,6 +20,7 @@ public class Disappearence {
 	public Disappearence(int id_disappearence, LocalDate dateDisappearence, LocalTime hourDisappearence,
 			String location, String contextDisappearence, String clothesDisappearence, int id_peoples) {
 		super();
+		this.disappearence = disappearence;
 		this.id_disappearence = id_disappearence;
 		this.dateDisappearence = dateDisappearence;
 		this.hourDisappearence = hourDisappearence;
@@ -26,6 +28,14 @@ public class Disappearence {
 		this.contextDisappearence = contextDisappearence;
 		this.clothesDisappearence = clothesDisappearence;
 		this.id_peoples = id_peoples;
+	}
+
+	public Disappearence getDisappearence() {
+		return disappearence;
+	}
+
+	public void setDisappearence(Disappearence disappearence) {
+		this.disappearence = disappearence;
 	}
 
 	public int getId_disappearence() {

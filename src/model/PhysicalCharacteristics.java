@@ -8,7 +8,7 @@ public class PhysicalCharacteristics {
 	private String eyesColor;
 	private String signs;
 	private int idPeople;
-	private String url;
+	
 
 	public PhysicalCharacteristics() {
 
@@ -17,6 +17,7 @@ public class PhysicalCharacteristics {
 	public PhysicalCharacteristics(int idCharacteristics, double height, double weight, String hairColor,
 			String eyesColor, String signs, int idPeople, String url) {
 		super();
+		
 		this.id_characteristics = idCharacteristics;
 		this.height = height;
 		this.weight = weight;
@@ -24,8 +25,9 @@ public class PhysicalCharacteristics {
 		this.eyesColor = eyesColor;
 		this.signs = signs;
 		this.idPeople = idPeople;
-		this.url = url;
 	}
+	
+	
 
 	public int getIdCharacteristics() {
 		return id_characteristics;
@@ -83,19 +85,12 @@ public class PhysicalCharacteristics {
 		this.idPeople = idPeople;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "PhysicalCharacteristics [id_characteristics=" + id_characteristics + ", height=" + height + ", weight="
 				+ weight + ", hairColor=" + hairColor + ", eyesColor=" + eyesColor + ", signs=" + signs + ", idPeople="
-				+ idPeople + ", url=" + url + "]";
+				+ idPeople + "]";
 	}
 
 }

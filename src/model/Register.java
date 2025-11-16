@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Register {
 
+	private People people;
 	private int id_register;
 	private Date dateReport;
 	private StatusRegister statusRegister;
@@ -15,10 +16,19 @@ public class Register {
 
 	public Register(int idRegister, Date dateReport, StatusRegister statusRegister, int idPeople) {
 		super();
+		this.people = people;
 		this.id_register = idRegister;
 		this.dateReport = dateReport;
 		this.statusRegister = statusRegister;
 		this.idPeople = idPeople;
+	}
+	
+	public People getPeople() {
+		return people;
+	}
+
+	public void setPeople(People people) {
+		this.people = people;
 	}
 
 	public int getIdRegister() {

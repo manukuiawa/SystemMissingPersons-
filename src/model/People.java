@@ -1,6 +1,7 @@
 package model;
 
 public class People {
+	private People people; 
 	private int id_peoples;
 	private String personName;
 	private int age;
@@ -17,6 +18,15 @@ public class People {
 		this.age = age;
 		this.gender = gender;
 		CPF = cPF;
+	}
+
+
+	public People getPeople() {
+		return people;
+	}
+
+	public void setPeople(People people) {
+		this.people = people;
 	}
 
 	public int getId_peoples() {
