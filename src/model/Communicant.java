@@ -14,7 +14,7 @@ public class Communicant {
 		super();
 		this.id_Communicant = idCommunicant;
 		this.cellphone = cellphone;
-		this.kinship = kinship;
+		this.kinship = kinship; 
 	}
 
 	public int getIdCommunicant() {

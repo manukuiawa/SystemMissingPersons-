@@ -32,6 +32,7 @@ public class RegisterCommunicant {
 	}
 
 	@Override
+	
 	public String toString() {
 		return "RegisterCommunicant [id_register=" + id_register + ", i_communicant=" + i_communicant + "]";
 	}
