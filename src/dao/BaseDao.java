@@ -1,6 +1,9 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BaseDao {
 
@@ -24,4 +27,24 @@ public class BaseDao {
             return null;
         }
     }
+    
+    public int getLastInsertedId() {
+
+        String sql = "SELECT LAST_INSERT_ID() AS id";
+
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao recuperar ID gerado: " + e.getMessage());
+        }
+
+        return -1; 
+    }
+
 }

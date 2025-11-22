@@ -3,18 +3,35 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+
+import dao.CommunicantDao;
+import dao.DisappearanceDao;
+import dao.InformsDao;
+import dao.PeopleDao;
+import dao.RegisterCommunicantDao;
+import dao.RegisterDao;
+import model.Communicant;
+import model.Disappearance;
+import model.People;
+import model.Register;
+import model.StatusRegister;
 
 public class RegisterPersonMissing {
 
@@ -407,7 +424,7 @@ public class RegisterPersonMissing {
 		inputParentesco.setModel(new DefaultComboBoxModel(new String[] { "Selecione a Opção: ", "Pai ", "Mãe",
 				"Filho(a)", "Cônjuge", "Irmão(a)", "Amigo(a)", "Outro" }));
 		inputParentesco.setBounds(481, 662, 196, 21);
-		inputParentesco.setBorder(BorderFactory.createLineBorder(new Color(99,187,242), 1));
+		inputParentesco.setBorder(BorderFactory.createLineBorder(new Color(99, 187, 242), 1));
 		inputParentesco.setBackground(new Color(0, 128, 192));
 		frame.getContentPane().add(inputParentesco);
 
@@ -421,6 +438,109 @@ public class RegisterPersonMissing {
 		btnRegistrar.setForeground(new Color(255, 255, 255));
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+
+					// ------------------------------
+					// 1) CADASTRAR PESSOA
+					// ------------------------------
+					People p = new People();
+					p.setPersonName(inputNome.getText());
+					p.setAge(Integer.parseInt(inutIdade.getText()));
+					p.setGender(inputSexo.getSelectedItem().toString());
+					p.setCPF(inputCPF.getText());
+
+					PeopleDao pdao = new PeopleDao();
+					pdao.salvar(p);
+
+					// pegar o id_peoples gerado
+					int idPeople = pdao.getLastInsertedId();
+
+					// ------------------------------
+					// 2) CADASTRAR DESAPARECIMENTO
+					// ------------------------------
+					Disappearance d = new Disappearance();
+
+					try {
+						// FORMATADORES
+						DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
+
+						// CONVERSÃO
+						LocalDate data = LocalDate.parse(inputDataDesaparecimento.getText(), formatterData);
+						LocalTime hora = LocalTime.parse(inputHorarioDesaparecimento.getText(), formatterHora);
+
+						d.setDateDisappearance(data);
+						d.setHourDisappearance(hora);
+
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Data ou hora inválida!");
+						return;
+					}
+
+					d.setLocation(inputLocalDesaparecido.getText());
+					d.setContextDisappearance(inputCircunstancias.getText());
+					d.setClothesDisappearance(inputDescrevaAsRoupas.getText());
+					d.setId_peoples(idPeople);
+
+					// DAO
+					DisappearanceDao ddao = new DisappearanceDao();
+
+					// INSERT
+					ddao.insert(d);
+
+					// PEGAR ID GERADO
+					int idDisappearance = ddao.getLastInsertedId();
+
+					// ------------------------------
+					// 3) CADASTRAR COMUNICANTE
+					// ------------------------------
+					Communicant c = new Communicant();
+					c.setCellphone(inputTelefone.getText());
+					c.setKinship(inputParentesco.getSelectedItem().toString());
+
+					CommunicantDao cdao = new CommunicantDao();
+					cdao.insert(c);
+
+					int idCommunicant = cdao.getLastInsertedId();
+
+					// ------------------------------
+					// 4) CADASTRAR REGISTRO
+					// ------------------------------
+					Register r = new Register();
+
+					java.util.Date now = new java.util.Date();
+					r.setDateReport(now);
+
+					// Enum correto:
+					r.setStatusRegister(StatusRegister.ANDAMENTO);
+
+					r.setIdPeople(idPeople);
+
+					RegisterDao rdao = new RegisterDao();
+					rdao.salvar(r);
+
+					int idRegister = rdao.getLastInsertedId();
+
+
+					// ------------------------------
+					// 5) VINCULAR REGISTRO + COMUNICANTE
+					// ------------------------------
+					RegisterCommunicantDao rcdao = new RegisterCommunicantDao();
+					rcdao.insert(idRegister, idCommunicant);
+
+					// ------------------------------
+					// 6) VINCULAR COMUNICANTE + DESAPARECIMENTO
+					// ------------------------------
+					InformsDao idao = new InformsDao();
+					idao.insert(idCommunicant, idDisappearance);
+
+					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso! 🔥🧡");
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao registrar: " + ex.getMessage());
+				}
+
 			}
 		});
 		btnRegistrar.setFont(new Font("Arial", Font.BOLD, 13));
