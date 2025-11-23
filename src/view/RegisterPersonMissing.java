@@ -438,6 +438,11 @@ public class RegisterPersonMissing {
 		btnCancelar.setBackground(new Color(244, 45, 48));
 		btnCancelar.setBounds(484, 712, 113, 32);
 		frame.getContentPane().add(btnCancelar);
+		
+		//Para fechar, quando clica em cancelar
+		btnCancelar.addActionListener(e -> {
+		    frame.dispose(); 
+		});
 
 		JButton btnRegistrar = new JButton("Registrar");
 		btnRegistrar.setForeground(new Color(255, 255, 255));
