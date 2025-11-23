@@ -7,15 +7,17 @@ public class People {
     private int age;
     private String gender;
     private String CPF;
+    private String address; 
 
     public People() {}
 
-    public People(int id_peoples, String personName, int age, String gender, String CPF) {
+    public People(int id_peoples, String personName, int age, String gender, String CPF, String address) {
         this.id_peoples = id_peoples;
         this.personName = personName;
         this.age = age;
         this.gender = gender;
         this.CPF = CPF;
+        this.address = address; 
     }
 
     public int getId_peoples() {
@@ -57,10 +59,18 @@ public class People {
     public void setCPF(String CPF) {
         this.CPF = CPF;
     }
+    
+    public String getAddress() {
+    	return address; 
+    }
+    
+    public void setAddress(String adress) {
+    	this.address = adress; 
+    }
 
     @Override
-    public String toString() {
-        return "People [id_peoples=" + id_peoples + ", personName=" + personName + ", age=" 
-                + age + ", gender=" + gender + ", CPF=" + CPF + "]";
-    }
+	public String toString() {
+		return "People [id_peoples=" + id_peoples + ", personName=" + personName + ", age=" + age + ", gender=" + gender
+				+ ", CPF=" + CPF + ", address=" + address + "]";
+	}
 }

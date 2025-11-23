@@ -2,40 +2,38 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
 
 import model.Disappearance;
 
-public class DisappearanceDao extends BaseDao {
+public class DisappearanceDao {
 
-    public void insert(Disappearance d) {
+	public int insert(Connection conn, Disappearance d) throws SQLException {
 
-        String sql = "INSERT INTO disappearance "
-                + "(dateDisappearance, hourDisappearance, location, contextDisappearance, clothesDisappearance, id_peoples) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO disappearance "
+	            + "(dateDisappearance, hourDisappearance, location, contextDisappearance, clothesDisappearance, id_peoples) "
+	            + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            
-            stmt.setDate(1, Date.valueOf(d.getDateDisappearance()));
+	        stmt.setDate(1, Date.valueOf(d.getDateDisappearance()));
+	        stmt.setTime(2, Time.valueOf(d.getHourDisappearance()));
+	        stmt.setString(3, d.getLocation());
+	        stmt.setString(4, d.getContextDisappearance());
+	        stmt.setString(5, d.getClothesDisappearance());
+	        stmt.setInt(6, d.getId_peoples());
 
-           
-            stmt.setTime(2, Time.valueOf(d.getHourDisappearance()));
+	        stmt.executeUpdate();
 
-            stmt.setString(3, d.getLocation());
-            stmt.setString(4, d.getContextDisappearance());
-            stmt.setString(5, d.getClothesDisappearance());
+	        ResultSet rs = stmt.getGeneratedKeys();
+	        if (rs.next()) return rs.getInt(1);
 
-            stmt.setInt(6, d.getId_peoples());
+	        return -1;
+	    }
+	}
 
-            stmt.executeUpdate();
-            System.out.println("Desaparecimento registrado com sucesso!");
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao registrar desaparecimento: " + e.getMessage());
-        }
     }
-}

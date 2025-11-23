@@ -4,23 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class RegisterCommunicantDao extends BaseDao {
+public class RegisterCommunicantDao {
 
-    public void insert(int idRegister, int idCommunicant) {
+    public void insert(Connection conn, int idRegister, int idCommunicant) throws SQLException {
 
-        String sql = "INSERT INTO RegisterCommunicant (id_register, id_communicant) VALUES (?, ?)";
+        String sql = "INSERT INTO registerCommunicant (id_register, id_communicant) VALUES (?, ?)";
 
-        try (Connection conn = getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idRegister);
             stmt.setInt(2, idCommunicant);
 
             stmt.executeUpdate();
             System.out.println("Ligação entre registro e comunicante salva!");
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao salvar ligação: " + e.getMessage());
         }
     }
 }
