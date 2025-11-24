@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,6 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import dao.DisappearanceListDao;
+import model.DisappearanceListItem;
 
 public class Disappearence {
 
@@ -106,7 +110,7 @@ public class Disappearence {
             y += 50;
         }
 
-        // Top bar
+     // Top bar
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(25, 35, 45));
         topPanel.setPreferredSize(new Dimension(0, 60));
@@ -130,19 +134,16 @@ public class Disappearence {
         JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         cardsPanel.setBackground(new Color(17, 24, 38));
 
-        // Dados fake (só visual)
-        String[][] people = {
-                {"Ana Silva Santos", "Feminino", "Shopping Center Norte", "19/01/2024", "165cm", "55kg"},
-                {"João Pedro Costa", "Masculino", "Parque da Cidade", "24/01/2024", "120cm", "25kg"},
-                {"Maria Oliveira", "Feminino", "Hospital Central", "27/01/2024", "155cm", "60kg"},
-                {"Carlos Lima", "Masculino", "Rodoviária Central", "10/02/2024", "170cm", "70kg"}
-        };
+        // BUSCANDO DO BANCO DE DADOS
+        DisappearanceListDao listDao = new DisappearanceListDao();
+        List<DisappearanceListItem> lista = listDao.listarTodos();
 
         Color ativoColor = new Color(255, 77, 77);
         Color pendenteColor = new Color(255, 165, 0);
         Color encerradoColor = new Color(40, 167, 69);
 
-        for (String[] p : people) {
+        // GERANDO OS CARDS COM BASE NOS DADOS DO BD 
+        for (DisappearanceListItem p : lista) {
 
             JPanel card = new JPanel();
             card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
@@ -150,67 +151,116 @@ public class Disappearence {
             card.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
             card.setPreferredSize(new Dimension(300, 420));
 
-            // STATUS TOPO (sempre inicia como ATIVO)
-            JLabel status = new JLabel("ATIVO", SwingConstants.CENTER);
+            // STATUS TOPO
+            JLabel status = new JLabel(p.getStatus().toUpperCase(), SwingConstants.CENTER);
             status.setForeground(Color.WHITE);
             status.setOpaque(true);
             status.setFont(new Font("Arial", Font.BOLD, 13));
-            status.setBackground(ativoColor);
             status.setBorder(new EmptyBorder(8, 10, 8, 10));
             status.setAlignmentX(Component.CENTER_ALIGNMENT);
             status.setMaximumSize(new Dimension(Integer.MAX_VALUE, 85));
             status.setPreferredSize(new Dimension(0, 85));
             status.setMinimumSize(new Dimension(0, 85));
 
+            
+            switch (p.getStatus().toLowerCase()) {
+                case "pendente":
+                    status.setBackground(pendenteColor);
+                    break;
+                case "encerrado":
+                    status.setBackground(encerradoColor);
+                    break;
+                default:
+                    status.setBackground(ativoColor);
+                    break;
+            }
+
             card.add(status);
             card.add(Box.createVerticalStrut(15));
 
             
-            status.setAlignmentX(Component.CENTER_ALIGNMENT);
-            
-            // NOME
-            JLabel nome = new JLabel(p[0]);
+         // NOME
+            JLabel nome = new JLabel(p.getName());
             nome.setForeground(Color.WHITE);
-            nome.setFont(new Font("Arial", Font.BOLD, 16));
+            nome.setFont(new Font("Arial", Font.BOLD, 24));
+            nome.setAlignmentX(Component.LEFT_ALIGNMENT);
             card.add(nome);
 
-            // Dados
             card.add(Box.createVerticalStrut(8));
-            card.add(makeLabel("Gênero: " + p[1]));
-            card.add(makeLabel("Local: " + p[2]));
-            card.add(makeLabel("Data: " + p[3]));
-            card.add(makeLabel("Altura: " + p[4] + "   Peso: " + p[5]));
+
+            // GÊNERO
+            JLabel genero = new JLabel("Gênero: " + p.getGender());
+            genero.setForeground(Color.WHITE);
+            genero.setAlignmentX(Component.LEFT_ALIGNMENT);
+            card.add(genero);
+
+            // LOCAL
+            JLabel local = new JLabel("Local: " + p.getLocation());
+            local.setForeground(Color.WHITE);
+            local.setAlignmentX(Component.LEFT_ALIGNMENT);
+            card.add(local);
+
+            // DATA EM FORMATO BR
+            String dataFormatada = "—";
+            if (p.getDate() != null) {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                dataFormatada = sdf.format(p.getDate());
+            }
+
+            JLabel dataLbl = new JLabel("Data: " + dataFormatada);
+            dataLbl.setForeground(Color.WHITE);
+            dataLbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+            card.add(dataLbl);
 
             card.add(Box.createVerticalStrut(15));
 
-            // PERGUNTA
+            // TEXTO "ESSE CASO ESTÁ:"
             JLabel pergunta = new JLabel("Este caso está:");
             pergunta.setForeground(Color.WHITE);
             pergunta.setFont(new Font("Arial", Font.BOLD, 13));
+            pergunta.setAlignmentX(Component.LEFT_ALIGNMENT);
             card.add(pergunta);
 
-            // RADIO BUTTONS
+            // RADIOS
             JRadioButton pendente = new JRadioButton("Pendente");
             JRadioButton encerrado = new JRadioButton("Encerrado");
 
             pendente.setBackground(new Color(25, 35, 45));
             pendente.setForeground(Color.WHITE);
+            pendente.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             encerrado.setBackground(new Color(25, 35, 45));
             encerrado.setForeground(Color.WHITE);
+            encerrado.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+            // GRUPO
             ButtonGroup group = new ButtonGroup();
             group.add(pendente);
             group.add(encerrado);
 
-            JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            // PAINEL ALINHADO
+            JPanel radioPanel = new JPanel();
+            radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
             radioPanel.setBackground(new Color(25, 35, 45));
+            radioPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
             radioPanel.add(pendente);
             radioPanel.add(encerrado);
 
             card.add(radioPanel);
 
-            // Atualiza status ao clicar
+            // AÇÕES
+            pendente.addActionListener(e -> {
+                status.setText("PENDENTE");
+                status.setBackground(pendenteColor);
+            });
+
+            encerrado.addActionListener(e -> {
+                status.setText("ENCERRADO");
+                status.setBackground(encerradoColor);
+            });
+
+
             pendente.addActionListener(e -> {
                 status.setText("PENDENTE");
                 status.setBackground(pendenteColor);
@@ -225,12 +275,5 @@ public class Disappearence {
         }
 
         mainPanel.add(cardsPanel, BorderLayout.NORTH);
-    }
-
-    private JLabel makeLabel(String text) {
-        JLabel lbl = new JLabel(text);
-        lbl.setForeground(new Color(200, 200, 200));
-        lbl.setFont(new Font("Arial", Font.PLAIN, 13));
-        return lbl;
     }
 }
