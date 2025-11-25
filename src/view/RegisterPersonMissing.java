@@ -67,6 +67,12 @@ public class RegisterPersonMissing {
 	/**
 	 * Create the application.
 	 */
+	
+	//para abrir a tela na outra tela
+	public void abrir() {
+	    frame.setVisible(true);
+	}
+	
 	public RegisterPersonMissing() {
 		initialize();
 	}

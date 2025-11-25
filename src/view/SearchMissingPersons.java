@@ -42,6 +42,7 @@ public class SearchMissingPersons {
 		});
 	}
 
+
 	/**
 	 * Create the application.
 	 */
