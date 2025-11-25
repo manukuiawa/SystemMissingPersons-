@@ -6,9 +6,9 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -22,7 +22,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import dao.DisappearanceListDao;
@@ -32,6 +34,7 @@ public class Disappearence {
 
     private JFrame frame;
     private JPanel sidebar;
+    private JPanel painelPrincipal; 
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -60,29 +63,27 @@ public class Disappearence {
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().setBackground(Color.decode("#011826"));
 
-        // Sidebar
+        // Sidebar (
         sidebar = new JPanel();
         sidebar.setLayout(null);
         sidebar.setBackground(new Color(25, 35, 45));
         sidebar.setPreferredSize(new Dimension(260, 750));
         frame.add(sidebar, BorderLayout.WEST);
 
-        // Título
+        // Título e botões da sidebar
         JLabel tituloSidebar = new JLabel("SCPD", SwingConstants.CENTER);
         tituloSidebar.setFont(new Font("Arial", Font.BOLD, 22));
         tituloSidebar.setForeground(Color.WHITE);
         tituloSidebar.setBounds(0, 20, 260, 30);
         sidebar.add(tituloSidebar);
 
-        // Subtítulo
         JLabel subtitulo = new JLabel("Controle de Pessoas", SwingConstants.CENTER);
         subtitulo.setFont(new Font("Arial", Font.PLAIN, 12));
         subtitulo.setForeground(new Color(180, 180, 180));
         subtitulo.setBounds(0, 55, 260, 35);
         sidebar.add(subtitulo);
 
-        // Botões do menu
-        String[] menu = {"Dashboard", "Pessoas Desaparecidas", "Busca Avançada", "Novo Caso"};
+        String[] menu = { "Dashboard", "Pessoas Desaparecidas", "Busca Avançada", "Novo Caso" };
         int y = 120;
         for (String item : menu) {
             JButton btn = new JButton(item);
@@ -110,27 +111,35 @@ public class Disappearence {
             y += 50;
         }
 
-     // Top bar
+        // Top bar (fixa no topo)
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(25, 35, 45));
         topPanel.setPreferredSize(new Dimension(0, 60));
         topPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
-
         JLabel title = new JLabel("Pessoas Desaparecidas - Casos");
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Arial", Font.BOLD, 18));
-
         topPanel.add(title, BorderLayout.WEST);
+
+        
+        painelPrincipal = new JPanel();
+        painelPrincipal.setBackground(Color.decode("#011826"));
+        painelPrincipal.setLayout(new BoxLayout(painelPrincipal, BoxLayout.Y_AXIS));
+        painelPrincipal.setBorder(new EmptyBorder(16, 16, 16, 16));
+
+        
         frame.add(topPanel, BorderLayout.NORTH);
 
-        // MAIN PANEL
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(new Color(17, 24, 38));
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        frame.add(mainPanel, BorderLayout.CENTER);
+        // Espaçamento entre top e cards
+        painelPrincipal.add(Box.createVerticalStrut(6));
 
-        // Painel dos cards
+        // Container para cards 
+        JPanel cardsWrapper = new JPanel();
+        cardsWrapper.setLayout(new BorderLayout());
+        cardsWrapper.setBackground(new Color(17, 24, 38));
+        cardsWrapper.setBorder(new EmptyBorder(12, 12, 12, 12));
+
+        // Painel dos cards 
         JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         cardsPanel.setBackground(new Color(17, 24, 38));
 
@@ -138,11 +147,12 @@ public class Disappearence {
         DisappearanceListDao listDao = new DisappearanceListDao();
         List<DisappearanceListItem> lista = listDao.listarTodos();
 
+        // Cores de status
         Color ativoColor = new Color(255, 77, 77);
         Color pendenteColor = new Color(255, 165, 0);
         Color encerradoColor = new Color(40, 167, 69);
 
-        // GERANDO OS CARDS COM BASE NOS DADOS DO BD 
+        // GERANDO OS CARDS COM BASE NOS DADOS DO BD
         for (DisappearanceListItem p : lista) {
 
             JPanel card = new JPanel();
@@ -150,6 +160,8 @@ public class Disappearence {
             card.setBackground(new Color(25, 35, 45));
             card.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
             card.setPreferredSize(new Dimension(300, 420));
+            // Use maximum size pra evitar que o GridLayout distorça o conteúdo
+            card.setMaximumSize(new Dimension(400, 500));
 
             // STATUS TOPO
             JLabel status = new JLabel(p.getStatus().toUpperCase(), SwingConstants.CENTER);
@@ -158,31 +170,28 @@ public class Disappearence {
             status.setFont(new Font("Arial", Font.BOLD, 13));
             status.setBorder(new EmptyBorder(8, 10, 8, 10));
             status.setAlignmentX(Component.CENTER_ALIGNMENT);
-            status.setMaximumSize(new Dimension(Integer.MAX_VALUE, 85));
-            status.setPreferredSize(new Dimension(0, 85));
-            status.setMinimumSize(new Dimension(0, 85));
+            status.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+            status.setPreferredSize(new Dimension(0, 40));
 
-            
             switch (p.getStatus().toLowerCase()) {
-                case "pendente":
-                    status.setBackground(pendenteColor);
-                    break;
-                case "encerrado":
-                    status.setBackground(encerradoColor);
-                    break;
-                default:
-                    status.setBackground(ativoColor);
-                    break;
+            case "pendente":
+                status.setBackground(pendenteColor);
+                break;
+            case "encerrado":
+                status.setBackground(encerradoColor);
+                break;
+            default:
+                status.setBackground(ativoColor);
+                break;
             }
 
             card.add(status);
-            card.add(Box.createVerticalStrut(15));
+            card.add(Box.createVerticalStrut(12));
 
-            
-         // NOME
+            // NOME (maior)
             JLabel nome = new JLabel(p.getName());
             nome.setForeground(Color.WHITE);
-            nome.setFont(new Font("Arial", Font.BOLD, 24));
+            nome.setFont(new Font("Arial", Font.BOLD, 20));
             nome.setAlignmentX(Component.LEFT_ALIGNMENT);
             card.add(nome);
 
@@ -212,7 +221,7 @@ public class Disappearence {
             dataLbl.setAlignmentX(Component.LEFT_ALIGNMENT);
             card.add(dataLbl);
 
-            card.add(Box.createVerticalStrut(15));
+            card.add(Box.createVerticalStrut(12));
 
             // TEXTO "ESSE CASO ESTÁ:"
             JLabel pergunta = new JLabel("Este caso está:");
@@ -247,20 +256,13 @@ public class Disappearence {
             radioPanel.add(pendente);
             radioPanel.add(encerrado);
 
+            
+            radioPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, radioPanel.getPreferredSize().height));
+
             card.add(radioPanel);
+            card.add(Box.createVerticalStrut(8));
 
-            // AÇÕES
-            pendente.addActionListener(e -> {
-                status.setText("PENDENTE");
-                status.setBackground(pendenteColor);
-            });
-
-            encerrado.addActionListener(e -> {
-                status.setText("ENCERRADO");
-                status.setBackground(encerradoColor);
-            });
-
-
+            // AÇÕES 
             pendente.addActionListener(e -> {
                 status.setText("PENDENTE");
                 status.setBackground(pendenteColor);
@@ -274,6 +276,31 @@ public class Disappearence {
             cardsPanel.add(card);
         }
 
-        mainPanel.add(cardsPanel, BorderLayout.NORTH);
+        
+        if (lista == null || lista.isEmpty()) {
+            JLabel vazio = new JLabel("Nenhum caso encontrado.");
+            vazio.setForeground(Color.WHITE);
+            vazio.setFont(new Font("Arial", Font.PLAIN, 16));
+            vazio.setHorizontalAlignment(SwingConstants.CENTER);
+            cardsPanel.add(vazio);
+        }
+
+        cardsWrapper.add(cardsPanel, BorderLayout.CENTER);
+
+       
+        painelPrincipal.add(cardsWrapper);
+
+
+        
+        JScrollPane scroll = new JScrollPane(painelPrincipal);
+        scroll.setBorder(null);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        // Adiciona o scroll no CENTER do frame
+        frame.getContentPane().add(scroll, BorderLayout.CENTER);
+
+        // Exibe a janela
+        SwingUtilities.invokeLater(() -> frame.setVisible(true));
     }
 }
