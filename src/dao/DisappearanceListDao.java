@@ -39,7 +39,6 @@ public class DisappearanceListDao extends BaseDao {
                 item.setHeight(rs.getDouble("height"));
                 item.setWeight(rs.getDouble("weight"));
                 item.setStatus(rs.getString("statusRegister"));
-                item.getStatus(statusRegister);
                 
 
                 lista.add(item);
