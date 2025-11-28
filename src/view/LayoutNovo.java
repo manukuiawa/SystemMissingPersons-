@@ -1,21 +1,26 @@
-package view; 
+package view;
 
-import java.awt.Color;
-import java.awt.Font;
+import dao.DisappearanceListDao;
+import model.DisappearanceListItem;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class LayoutNovo {
 
     private JFrame frame;
 
+    // Componentes do caso ativo
+    private JLabel lblNome, lblIdade, lblData, lblLocal, lblDesc, lblPhone;
+    private JPanel listPanel;
+
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     public LayoutNovo() {
         initialize();
+        carregarDados();
     }
 
     private void initialize() {
@@ -26,7 +31,7 @@ public class LayoutNovo {
         frame.setResizable(false);
 
         JPanel root = new JPanel(null);
-        root.setBackground(new Color(10, 12, 25)); // fundo escuro igual imagem
+        root.setBackground(new Color(10, 12, 25));
         frame.setContentPane(root);
 
         //----------------------------------------------
@@ -38,7 +43,6 @@ public class LayoutNovo {
         activeCard.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
         root.add(activeCard);
 
-        // Header vermelho
         JPanel header = new JPanel(null);
         header.setBounds(0, 0, 420, 80);
         header.setBackground(new Color(200, 60, 80));
@@ -51,46 +55,46 @@ public class LayoutNovo {
         header.add(lblTitle);
 
         //----------------------------------------------
-        // Informações
+        // Informações do caso ativo
         //----------------------------------------------
-        JLabel nome = new JLabel("teste");
-        nome.setForeground(Color.WHITE);
-        nome.setFont(new Font("Arial", Font.BOLD, 22));
-        nome.setBounds(20, 90, 300, 30);
-        activeCard.add(nome);
+        lblNome = new JLabel("—");
+        lblNome.setForeground(Color.WHITE);
+        lblNome.setFont(new Font("Arial", Font.BOLD, 22));
+        lblNome.setBounds(20, 90, 350, 30);
+        activeCard.add(lblNome);
 
-        JLabel idade = new JLabel("<html>Idade<br><b>10 anos</b></html>");
-        idade.setForeground(Color.WHITE);
-        idade.setBounds(20, 130, 150, 50);
-        activeCard.add(idade);
+        lblIdade = new JLabel("<html>Idade<br><b>—</b></html>");
+        lblIdade.setForeground(Color.WHITE);
+        lblIdade.setBounds(20, 130, 150, 50);
+        activeCard.add(lblIdade);
 
-        JLabel data = new JLabel("<html>Data<br><b>30/06/4177</b></html>");
-        data.setForeground(Color.WHITE);
-        data.setBounds(200, 130, 150, 50);
-        activeCard.add(data);
+        lblData = new JLabel("<html>Data<br><b>—</b></html>");
+        lblData.setForeground(Color.WHITE);
+        lblData.setBounds(200, 130, 180, 50);
+        activeCard.add(lblData);
 
         JLabel localTitle = new JLabel("Local do Desaparecimento");
         localTitle.setForeground(Color.LIGHT_GRAY);
         localTitle.setBounds(20, 190, 250, 20);
         activeCard.add(localTitle);
 
-        JLabel local = new JLabel("teste");
-        local.setForeground(Color.WHITE);
-        local.setBounds(20, 210, 250, 20);
-        activeCard.add(local);
+        lblLocal = new JLabel("—");
+        lblLocal.setForeground(Color.WHITE);
+        lblLocal.setBounds(20, 210, 350, 20);
+        activeCard.add(lblLocal);
 
         JLabel descTitle = new JLabel("Descrição Física");
         descTitle.setForeground(Color.LIGHT_GRAY);
         descTitle.setBounds(20, 235, 200, 20);
         activeCard.add(descTitle);
 
-        JLabel desc = new JLabel("teste teste teste");
-        desc.setForeground(Color.WHITE);
-        desc.setBounds(20, 255, 350, 20);
-        activeCard.add(desc);
+        lblDesc = new JLabel("—");
+        lblDesc.setForeground(Color.WHITE);
+        lblDesc.setBounds(20, 255, 350, 20);
+        activeCard.add(lblDesc);
 
         //----------------------------------------------
-        // CARD de informações (telefone)
+        // Card informativo
         //----------------------------------------------
         JPanel infoCard = new JPanel(null);
         infoCard.setBounds(20, 285, 380, 70);
@@ -103,10 +107,10 @@ public class LayoutNovo {
         phoneIcon.setForeground(Color.PINK);
         infoCard.add(phoneIcon);
 
-        JLabel phone = new JLabel("4799969999");
-        phone.setForeground(Color.WHITE);
-        phone.setBounds(50, 20, 250, 30);
-        infoCard.add(phone);
+        lblPhone = new JLabel("—");
+        lblPhone.setForeground(Color.WHITE);
+        lblPhone.setBounds(50, 20, 300, 30);
+        infoCard.add(lblPhone);
 
         //----------------------------------------------
         // Botões
@@ -128,7 +132,7 @@ public class LayoutNovo {
         activeCard.add(btnEncerrar);
 
         //----------------------------------------------
-        // Título "Casos Pendentes"
+        // Lista de pendentes
         //----------------------------------------------
         JLabel pendTitle = new JLabel("Casos Pendentes");
         pendTitle.setForeground(new Color(255, 170, 50));
@@ -136,55 +140,110 @@ public class LayoutNovo {
         pendTitle.setBounds(20, 490, 300, 40);
         root.add(pendTitle);
 
-        //----------------------------------------------
-        // LISTA (painel cinza)
-        //----------------------------------------------
-        JPanel listPanel = new JPanel(null);
-        listPanel.setBounds(20, 530, 1250, 170);
+        JPanel listContainer = new JPanel(new BorderLayout());
+        listContainer.setBounds(20, 530, 1250, 170);
+        listContainer.setBackground(new Color(22, 25, 40));
+        listContainer.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
+        root.add(listContainer);
+
+        JScrollPane jsp = new JScrollPane();
+        jsp.setBorder(null);
+        listContainer.add(jsp, BorderLayout.CENTER);
+
+        listPanel = new JPanel(null);
         listPanel.setBackground(new Color(22, 25, 40));
-        listPanel.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
-        root.add(listPanel);
-
-        JLabel dot = new JLabel("●");
-        dot.setForeground(Color.YELLOW);
-        dot.setBounds(20, 30, 40, 30);
-        listPanel.add(dot);
-
-        JLabel pendingName = new JLabel("teste");
-        pendingName.setForeground(Color.WHITE);
-        pendingName.setFont(new Font("Arial", Font.BOLD, 16));
-        pendingName.setBounds(60, 30, 150, 30);
-        listPanel.add(pendingName);
-
-        JLabel idade2 = new JLabel("<html>Idade<br><b>34 anos</b></html>");
-        idade2.setForeground(Color.WHITE);
-        idade2.setBounds(250, 20, 150, 50);
-        listPanel.add(idade2);
-
-        JLabel data2 = new JLabel("<html>Data do Desaparecimento<br><b>17/07/4558</b></html>");
-        data2.setForeground(Color.WHITE);
-        data2.setBounds(400, 20, 200, 50);
-        listPanel.add(data2);
-
-        JLabel local2 = new JLabel("<html>Local<br><b>tste</b></html>");
-        local2.setForeground(Color.WHITE);
-        local2.setBounds(650, 20, 150, 50);
-        listPanel.add(local2);
-
-        JLabel desc2 = new JLabel("<html>Descrição Física<br><b>teste</b></html>");
-        desc2.setForeground(Color.WHITE);
-        desc2.setBounds(800, 20, 180, 50);
-        listPanel.add(desc2);
-
-        JLabel contato2 = new JLabel("<html>Contato<br><b>2555565555</b></html>");
-        contato2.setForeground(Color.WHITE);
-        contato2.setBounds(1020, 20, 200, 50);
-        listPanel.add(contato2);
+        jsp.setViewportView(listPanel);
 
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Disappearence::new);
+    //----------------------------------------------------------
+    // CARREGA DO DAO
+    //----------------------------------------------------------
+    private void carregarDados() {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                DisappearanceListDao dao = new DisappearanceListDao();
+                List<DisappearanceListItem> lista = dao.listarTodos();
+
+                if (lista == null || lista.isEmpty()) {
+                    lblNome.setText("Nenhum caso encontrado");
+                    return;
+                }
+
+                // Mostra o primeiro como caso ativo
+                preencherAtivo(lista.get(0));
+
+                // Lista os outros abaixo
+                preencherLista(lista);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
+
+    //----------------------------------------------------------
+    // PREENCHE O CARD PRINCIPAL
+    //----------------------------------------------------------
+    private void preencherAtivo(DisappearanceListItem item) {
+
+        lblNome.setText(item.getName());
+
+        lblIdade.setText("<html>Idade<br><b>" + item.getAge() + "</b></html>");
+
+        lblData.setText("<html>Data<br><b>" +
+                (item.getDate() != null ? sdf.format(item.getDate()) : "—") +
+                "</b></html>");
+
+        lblLocal.setText(item.getLocation());
+
+        lblDesc.setText(
+                item.getHeight() + "m • " +
+                item.getWeight() + "kg • " +
+                item.getGender()
+        );
+
+        lblPhone.setText("Status: " + item.getStatus());
+    }
+
+    //----------------------------------------------------------
+    // LISTA OS OUTROS CASOS
+    //----------------------------------------------------------
+    private void preencherLista(List<DisappearanceListItem> lista) {
+
+        listPanel.removeAll();
+
+        int y = 10;
+
+        for (DisappearanceListItem item : lista) {
+
+            JPanel card = new JPanel(null);
+            card.setBackground(new Color(30, 33, 50));
+            card.setBounds(10, y, 1200, 60);
+            card.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 70)));
+            listPanel.add(card);
+
+            JLabel lbl = new JLabel(
+                    item.getName() + " — " +
+                    item.getAge() + " anos — " +
+                    item.getLocation() + " — " +
+                    "Status: " + item.getStatus()
+            );
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(20, 20, 900, 20);
+            card.add(lbl);
+
+            y += 70;
+        }
+
+        listPanel.setPreferredSize(new Dimension(1200, y + 10));
+        listPanel.revalidate();
+        listPanel.repaint();
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LayoutNovo());
+    }
+
 }
