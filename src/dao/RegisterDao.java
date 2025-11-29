@@ -23,6 +23,7 @@ public class RegisterDao {
 
             stmt.executeUpdate();
             System.out.println("Registro salvo com sucesso!");
+            System.out.println(".");
         }
     }
 }
