@@ -32,7 +32,7 @@ public class CharacteristicsDao {
             System.out.println("Características físicas cadastradas com sucesso!");
         } catch (SQLException e) {
             System.err.println("Erro ao inserir características físicas: " + e.getMessage());
-            throw e; // repassa o erro pra camada de cima tratar
+            throw e; 
         }
     }
 }

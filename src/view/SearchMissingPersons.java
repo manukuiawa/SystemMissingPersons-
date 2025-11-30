@@ -1,5 +1,5 @@
-     
-	package view;
+
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -42,12 +42,15 @@ public class SearchMissingPersons {
 		});
 	}
 
-
 	/**
 	 * Create the application.
 	 */
 	public SearchMissingPersons() {
 		initialize();
+	}
+
+	public void abrir() {
+		frame.setVisible(true);
 	}
 
 	/**
@@ -145,7 +148,7 @@ public class SearchMissingPersons {
 		filtroCard.add(tituloFiltro);
 		filtroCard.add(Box.createVerticalStrut(10));
 
-		//inputs
+		// inputs
 		filtroCard.add(criarLinhaCampos(new String[] { "Altura", "Cor do Cabelo", "Cor dos Olhos" }));
 		filtroCard.add(Box.createVerticalStrut(20));
 		filtroCard.add(criarLinhaCampos(new String[] { "Tatuagens", "Cicatrizes", "Outros sinais" }));

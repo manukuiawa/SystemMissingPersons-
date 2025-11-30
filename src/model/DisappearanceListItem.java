@@ -1,79 +1,90 @@
 package model;
 
-import java.util.Date;
-
 public class DisappearanceListItem {
-	private String name;
-	private int age;
-	private String gender;
-	private String location;
-	private Date date;
-	private double height;
-	private double weight;
-	private String status;
 
-	public String getName() {
-		return name;
-	}
+    private int idPeoples;      
+    private int idRegister;     
+    private String name;
+    private String gender;
+    private int age;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private double height;
+    private double weight;
+    private String hairColor;
+    private String eyeColor;
+    private String disappearanceContext;
 
-	public int getAge() {
-		return age;
-	}
+    private String contactName;
+    private String contactPhone;
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    private String location;
 
-	public String getGender() {
-		return gender;
-	}
+    private StatusRegister status;
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    
+    public DisappearanceListItem(int idPeoples, int idRegister, String name, String gender, int age,
+                                 String eyeColor, String hairColor,
+                                 String disappearanceContext,
+                                 double height, double weight,
+                                 String contactName, String contactPhone,
+                                 String location,
+                                 StatusRegister status) {
+        this.idPeoples = idPeoples;
+        this.idRegister = idRegister;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.eyeColor = eyeColor;
+        this.hairColor = hairColor;
+        this.disappearanceContext = disappearanceContext;
+        this.height = height;
+        this.weight = weight;
+        this.contactName = contactName;
+        this.contactPhone = contactPhone;
+        this.location = location;
+        this.status = status;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+   
+    public int getIdPeoples() { return idPeoples; }
+    public void setIdPeoples(int idPeoples) { this.idPeoples = idPeoples; }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public int getIdRegister() { return idRegister; }
+    public void setIdRegister(int idRegister) { this.idRegister = idRegister; }
 
-	public Date getDate() {
-		return date;
-	}
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-	public double getHeight() {
-		return height;
-	}
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
 
-	public void setHeight(double height) {
-		this.height = height;
-	}
+    public double getHeight() { return height; }
+    public void setHeight(double height) { this.height = height; }
 
-	public double getWeight() {
-		return weight;
-	}
+    public double getWeight() { return weight; }
+    public void setWeight(double weight) { this.weight = weight; }
 
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
+    public String getHairColor() { return hairColor; }
+    public void setHairColor(String hairColor) { this.hairColor = hairColor; }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getEyeColor() { return eyeColor; }
+    public void setEyeColor(String eyeColor) { this.eyeColor = eyeColor; }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getDisappearanceContext() { return disappearanceContext; }
+    public void setDisappearanceContext(String disappearanceContext) { this.disappearanceContext = disappearanceContext; }
 
+    public String getContactName() { return contactName; }
+    public void setContactName(String contactName) { this.contactName = contactName; }
+
+    public String getContactPhone() { return contactPhone; }
+    public void setContactPhone(String contactPhone) { this.contactPhone = contactPhone; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public StatusRegister getStatus() { return status; }
+    public void setStatus(StatusRegister status) { this.status = status; }
 }

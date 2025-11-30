@@ -12,7 +12,7 @@ public class BaseDao {
     private static final String USER = "root";
     private static final String PASS = "0166";
 
-    // A conexão principal (uma única por operação)
+    
     public Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,7 +23,7 @@ public class BaseDao {
         return DriverManager.getConnection(URL, USER, PASS);
     }
 
-    // Recupera o último ID da sessão atual
+    
     public int getLastInsertedId(Connection conn) throws SQLException {
         String sql = "SELECT LAST_INSERT_ID() AS id";
 
@@ -38,7 +38,7 @@ public class BaseDao {
         }
     }
 
-    // Fecha a conexão (se quiser)
+  
     public void close(Connection conn) {
         if (conn != null) {
             try {

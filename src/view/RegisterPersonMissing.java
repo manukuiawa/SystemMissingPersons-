@@ -67,12 +67,12 @@ public class RegisterPersonMissing {
 	/**
 	 * Create the application.
 	 */
-	
-	//para abrir a tela na outra tela
+
+	// para abrir a tela na outra tela
 	public void abrir() {
-	    frame.setVisible(true);
+		frame.setVisible(true);
 	}
-	
+
 	public RegisterPersonMissing() {
 		initialize();
 	}
@@ -444,137 +444,135 @@ public class RegisterPersonMissing {
 		btnCancelar.setBackground(new Color(244, 45, 48));
 		btnCancelar.setBounds(484, 712, 113, 32);
 		frame.getContentPane().add(btnCancelar);
-		
-		//Para fechar, quando clica em cancelar
+
+		// Para fechar, quando clica em cancelar
 		btnCancelar.addActionListener(e -> {
-		    frame.dispose(); 
+			frame.dispose();
 		});
 
 		JButton btnRegistrar = new JButton("Registrar");
 		btnRegistrar.setForeground(new Color(255, 255, 255));
 		btnRegistrar.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-		        BaseDao base = new BaseDao();
-		        Connection conn = null;
+				BaseDao base = new BaseDao();
+				Connection conn = null;
 
-		        try {
-		            conn = base.getConnection();
-		            conn.setAutoCommit(false);
-		            
-		            //CADASTRAR PESSOA
-		        
-		            People pessoa = new People();
-		            pessoa.setPersonName(inputNome.getText());
-		            pessoa.setAge(Integer.parseInt(inutIdade.getText()));
-		            pessoa.setGender(inputSexo.getSelectedItem().toString());
-		            pessoa.setCPF(inputCPF.getText());
-		            pessoa.setAddress(inputEndereco.getText());
+				try {
+					conn = base.getConnection();
+					conn.setAutoCommit(false);
 
-		            PeopleDao pdao = new PeopleDao();
-		            pdao.insert(conn, pessoa);
+					// CADASTRAR PESSOA
 
-		            int idPeople = base.getLastInsertedId(conn);
+					People pessoa = new People();
+					pessoa.setPersonName(inputNome.getText());
+					pessoa.setAge(Integer.parseInt(inutIdade.getText()));
+					pessoa.setGender(inputSexo.getSelectedItem().toString());
+					pessoa.setCPF(inputCPF.getText());
+					pessoa.setAddress(inputEndereco.getText());
 
+					PeopleDao pdao = new PeopleDao();
+					pdao.insert(conn, pessoa);
 
-		            //CADASTRAR DESAPARECIMENTO
-		      
-		            Disappearance d = new Disappearance();
+					int idPeople = base.getLastInsertedId(conn);
 
-		            try {
-		                DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		                DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm");
+					// CADASTRAR DESAPARECIMENTO
 
-		                d.setDateDisappearance(LocalDate.parse(inputDataDesaparecimento.getText(), df));
-		                d.setHourDisappearance(LocalTime.parse(inputHorarioDesaparecimento.getText(), hf));
+					Disappearance d = new Disappearance();
 
-		            } catch (Exception ex) {
-		                JOptionPane.showMessageDialog(null, "Data ou hora inválida!");
-		                return;
-		            }
+					try {
+						DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm");
 
-		            d.setLocation(inputLocalDesaparecido.getText());
-		            d.setContextDisappearance(inputCircunstancias.getText());
-		            d.setClothesDisappearance(inputDescrevaAsRoupas.getText());
-		            d.setId_peoples(idPeople);
+						d.setDateDisappearance(LocalDate.parse(inputDataDesaparecimento.getText(), df));
+						d.setHourDisappearance(LocalTime.parse(inputHorarioDesaparecimento.getText(), hf));
 
-		            DisappearanceDao ddao = new DisappearanceDao();
-		            ddao.insert(conn, d);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Data ou hora inválida!");
+						return;
+					}
 
-		            int idDisappearance = base.getLastInsertedId(conn);
+					d.setLocation(inputLocalDesaparecido.getText());
+					d.setContextDisappearance(inputCircunstancias.getText());
+					d.setClothesDisappearance(inputDescrevaAsRoupas.getText());
+					d.setId_peoples(idPeople);
 
+					DisappearanceDao ddao = new DisappearanceDao();
+					ddao.insert(conn, d);
 
-		            //CARACTERISTICAS FÍSICAS
-		        
-		            PhysicalCharacteristics pc = new PhysicalCharacteristics();
+					int idDisappearance = base.getLastInsertedId(conn);
 
-		            pc.setHeight(Double.parseDouble(inputAltura.getText()));
-		            pc.setWeight(Double.parseDouble(inputPeso.getText()));
-		            pc.setHairColor(inputCordoCabelo.getSelectedItem().toString());
-		            pc.setEyesColor(inputCordosOlhos.getSelectedItem().toString());
-		            pc.setSigns(inputSinais.getText());
-		            pc.setIdPeople(idPeople);
+					// CARACTERISTICAS FÍSICAS
 
-		            CharacteristicsDao cdao = new CharacteristicsDao();
-		            cdao.insert(conn, pc);
+					PhysicalCharacteristics pc = new PhysicalCharacteristics();
 
-		            // COMUNICANTE
-		            
-		            Communicant com = new Communicant();
-		            com.setCellphone(inputTelefone.getText());
-		            com.setKinship(inputParentesco.getSelectedItem().toString());
+					pc.setHeight(Double.parseDouble(inputAltura.getText()));
+					pc.setWeight(Double.parseDouble(inputPeso.getText()));
+					pc.setHairColor(inputCordoCabelo.getSelectedItem().toString());
+					pc.setEyesColor(inputCordosOlhos.getSelectedItem().toString());
+					pc.setSigns(inputSinais.getText());
+					pc.setIdPeople(idPeople);
 
-		            CommunicantDao comdao = new CommunicantDao();
-		            comdao.insert(conn, com);
+					CharacteristicsDao cdao = new CharacteristicsDao();
+					cdao.insert(conn, pc);
 
-		            int idCommunicant = base.getLastInsertedId(conn);
+					// COMUNICANTE
 
-		
-		            // REGISTRO
-		          
-		            Register reg = new Register();
-		            reg.setDateReport(new java.util.Date());
-		            reg.setStatusRegister(StatusRegister.ANDAMENTO);
-		            reg.setIdPeople(idPeople);
+					Communicant com = new Communicant();
+					com.setCellphone(inputTelefone.getText());
+					com.setKinship(inputParentesco.getSelectedItem().toString());
 
-		            RegisterDao rdao = new RegisterDao();
-		            rdao.insert(conn, reg);
+					CommunicantDao comdao = new CommunicantDao();
+					comdao.insert(conn, com);
 
-		            int idRegister = base.getLastInsertedId(conn);
-		           
-		            // VINCULAR REGISTRO + COMUNICANTE
-		           
-		            RegisterCommunicantDao rcdao = new RegisterCommunicantDao();
-		            rcdao.insert(conn, idRegister, idCommunicant);
+					int idCommunicant = base.getLastInsertedId(conn);
 
+					// REGISTRO
 
-		            
-		            // VINCULAR COMUNICANTE + DESAPARECIMENTO
-		            
-		            InformsDao idao = new InformsDao();
-		            idao.insert(conn, idCommunicant, idDisappearance);
+					Register reg = new Register();
+					reg.setDateReport(new java.util.Date());
+					reg.setStatusRegister(StatusRegister.ANDAMENTO);
+					reg.setIdPeople(idPeople);
 
-		            
-		            // FINALIZAR TRANSAÇÃO
-		            
-		            conn.commit();
-		            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+					RegisterDao rdao = new RegisterDao();
+					rdao.insert(conn, reg);
 
-		        } catch (Exception ex) {
-		            try {
-		                if (conn != null) conn.rollback();
-		            } catch (Exception e2) {}
+					int idRegister = base.getLastInsertedId(conn);
 
-		            ex.printStackTrace();
-		            JOptionPane.showMessageDialog(null, "Erro ao registrar: " + ex.getMessage());
+					// VINCULAR REGISTRO + COMUNICANTE
 
-		        } finally {
-		            try {
-		                if (conn != null) conn.close();
-		            } catch (SQLException ex) {}
-		        }
+					RegisterCommunicantDao rcdao = new RegisterCommunicantDao();
+					rcdao.insert(conn, idRegister, idCommunicant);
 
-		    }
+					// VINCULAR COMUNICANTE + DESAPARECIMENTO
+
+					InformsDao idao = new InformsDao();
+					idao.insert(conn, idCommunicant, idDisappearance);
+
+					// FINALIZAR TRANSAÇÃO
+
+					conn.commit();
+					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+
+				} catch (Exception ex) {
+					try {
+						if (conn != null)
+							conn.rollback();
+					} catch (Exception e2) {
+					}
+
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao registrar: " + ex.getMessage());
+
+				} finally {
+					try {
+						if (conn != null)
+							conn.close();
+					} catch (SQLException ex) {
+					}
+				}
+
+			}
 		});
 
 		btnRegistrar.setFont(new Font("Arial", Font.BOLD, 13));

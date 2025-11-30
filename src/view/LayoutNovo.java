@@ -1,249 +1,397 @@
 package view;
 
-import dao.DisappearanceListDao;
-import model.DisappearanceListItem;
-
-import javax.swing.*;
-import java.awt.*;
-import java.text.SimpleDateFormat;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class LayoutNovo {
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
-    private JFrame frame;
+import dao.DisappearanceListDao;
+import model.DisappearanceListItem;
+import model.StatusRegister;
 
-    // Componentes do caso ativo
-    private JLabel lblNome, lblIdade, lblData, lblLocal, lblDesc, lblPhone;
-    private JPanel listPanel;
+public class LayoutNovo extends JFrame {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private JPanel painelAtivos;
+	private JPanel listaPendentes;
+	private JPanel listaEncerrados;
 
-    public LayoutNovo() {
-        initialize();
-        carregarDados();
-    }
+	private List<DisappearanceListItem> desaparecidos;
 
-    private void initialize() {
-        frame = new JFrame("Casos");
-        frame.setSize(1300, 750);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+	public LayoutNovo() {
+		setTitle("SCPD - Sistema de Controle de Pessoas Desaparecidas");
+		setSize(1300, 750);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+		getContentPane().setBackground(Color.decode("#011826"));
 
-        JPanel root = new JPanel(null);
-        root.setBackground(new Color(10, 12, 25));
-        frame.setContentPane(root);
+		// ----------------- SIDEBAR -----------------
+		JPanel sidebar = new JPanel();
+		sidebar.setLayout(null);
+		sidebar.setBackground(new Color(25, 35, 45));
+		sidebar.setBounds(0, 0, 260, 750);
+		getContentPane().add(sidebar);
 
-        //----------------------------------------------
-        // CARD "CASO ATIVO"
-        //----------------------------------------------
-        JPanel activeCard = new JPanel(null);
-        activeCard.setBounds(20, 20, 420, 450);
-        activeCard.setBackground(new Color(22, 25, 40));
-        activeCard.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
-        root.add(activeCard);
+		JLabel tituloSidebar = new JLabel("SCPD", SwingConstants.CENTER);
+		tituloSidebar.setFont(new Font("Arial", Font.BOLD, 22));
+		tituloSidebar.setForeground(Color.WHITE);
+		tituloSidebar.setBounds(0, 20, 260, 30);
+		sidebar.add(tituloSidebar);
 
-        JPanel header = new JPanel(null);
-        header.setBounds(0, 0, 420, 80);
-        header.setBackground(new Color(200, 60, 80));
-        activeCard.add(header);
+		JLabel subtitulo = new JLabel("Controle de Desaparecidos", SwingConstants.CENTER);
+		subtitulo.setFont(new Font("Arial", Font.PLAIN, 12));
+		subtitulo.setForeground(new Color(180, 180, 180));
+		subtitulo.setBounds(0, 55, 260, 35);
+		sidebar.add(subtitulo);
 
-        JLabel lblTitle = new JLabel("CASO ATIVO");
-        lblTitle.setForeground(Color.WHITE);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        lblTitle.setBounds(20, 20, 300, 40);
-        header.add(lblTitle);
+		String[] menu = { "Dashboard", "Pessoas Desaparecidas", "Busca Avançada", "Novo Caso" };
+		int y = 120;
 
-        //----------------------------------------------
-        // Informações do caso ativo
-        //----------------------------------------------
-        lblNome = new JLabel("—");
-        lblNome.setForeground(Color.WHITE);
-        lblNome.setFont(new Font("Arial", Font.BOLD, 22));
-        lblNome.setBounds(20, 90, 350, 30);
-        activeCard.add(lblNome);
+		for (String item : menu) {
+			JButton btn = new JButton(item);
+			btn.setBounds(15, y, 230, 40);
+			btn.setFocusPainted(false);
+			btn.setForeground(Color.WHITE);
+			btn.setBackground(new Color(25, 35, 45));
+			btn.setFont(new Font("Arial", Font.PLAIN, 14));
+			btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			btn.setBorder(BorderFactory.createEmptyBorder());
 
-        lblIdade = new JLabel("<html>Idade<br><b>—</b></html>");
-        lblIdade.setForeground(Color.WHITE);
-        lblIdade.setBounds(20, 130, 150, 50);
-        activeCard.add(lblIdade);
+			btn.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					btn.setBackground(new Color(35, 50, 65));
+				}
 
-        lblData = new JLabel("<html>Data<br><b>—</b></html>");
-        lblData.setForeground(Color.WHITE);
-        lblData.setBounds(200, 130, 180, 50);
-        activeCard.add(lblData);
+				@Override
+				public void mouseExited(MouseEvent e) {
+					btn.setBackground(new Color(25, 35, 45));
+				}
+			});
 
-        JLabel localTitle = new JLabel("Local do Desaparecimento");
-        localTitle.setForeground(Color.LIGHT_GRAY);
-        localTitle.setBounds(20, 190, 250, 20);
-        activeCard.add(localTitle);
+			switch (item) {
+			case "Novo Caso":
+				btn.addActionListener(e -> {
+					SwingUtilities.invokeLater(() -> {
+						RegisterPersonMissing tela = new RegisterPersonMissing();
+						tela.abrir();
+					});
+				});
+				break;
 
-        lblLocal = new JLabel("—");
-        lblLocal.setForeground(Color.WHITE);
-        lblLocal.setBounds(20, 210, 350, 20);
-        activeCard.add(lblLocal);
+			case "Dashboard":
+				btn.addActionListener(e -> {
+					SwingUtilities.invokeLater(() -> {
+						DashboardVisual dashboard = new DashboardVisual();
+						dashboard.setVisible(true);
+					});
+				});
+				break;
 
-        JLabel descTitle = new JLabel("Descrição Física");
-        descTitle.setForeground(Color.LIGHT_GRAY);
-        descTitle.setBounds(20, 235, 200, 20);
-        activeCard.add(descTitle);
+			case "Busca Avançada":
+				btn.addActionListener(e -> {
+					SwingUtilities.invokeLater(() -> {
+						SearchMissingPersons busca = new SearchMissingPersons();
+						busca.abrir(); // chama o frame interno
+					});
+				});
+				break;
 
-        lblDesc = new JLabel("—");
-        lblDesc.setForeground(Color.WHITE);
-        lblDesc.setBounds(20, 255, 350, 20);
-        activeCard.add(lblDesc);
+			default:
+				System.out.println("Opção não configurada: " + item);
+			}
 
-        //----------------------------------------------
-        // Card informativo
-        //----------------------------------------------
-        JPanel infoCard = new JPanel(null);
-        infoCard.setBounds(20, 285, 380, 70);
-        infoCard.setBackground(new Color(15, 18, 30));
-        infoCard.setBorder(BorderFactory.createLineBorder(new Color(30, 30, 45)));
-        activeCard.add(infoCard);
+			sidebar.add(btn);
+			y += 50;
+		}
 
-        JLabel phoneIcon = new JLabel("📞");
-        phoneIcon.setBounds(10, 20, 30, 30);
-        phoneIcon.setForeground(Color.PINK);
-        infoCard.add(phoneIcon);
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBackground(new Color(17, 24, 38));
+		mainPanel.setBounds(260, 0, 1040, 750);
+		mainPanel.setLayout(new BorderLayout());
+		getContentPane().add(mainPanel);
 
-        lblPhone = new JLabel("—");
-        lblPhone.setForeground(Color.WHITE);
-        lblPhone.setBounds(50, 20, 300, 30);
-        infoCard.add(lblPhone);
+		// Header
+		JPanel header = new JPanel(new BorderLayout());
+		header.setBackground(new Color(17, 24, 38));
+		header.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
+		JLabel lblTitulo = new JLabel("Busca Avançada por Características");
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		header.add(lblTitulo, BorderLayout.WEST);
+		mainPanel.add(header, BorderLayout.NORTH);
 
-        //----------------------------------------------
-        // Botões
-        //----------------------------------------------
-        JButton btnPendente = new JButton("PENDENTE");
-        btnPendente.setBounds(20, 365, 160, 40);
-        btnPendente.setBackground(new Color(255, 170, 40));
-        btnPendente.setForeground(Color.BLACK);
-        btnPendente.setFont(new Font("Arial", Font.BOLD, 14));
-        btnPendente.setFocusPainted(false);
-        activeCard.add(btnPendente);
+		JPanel conteudo = new JPanel();
+		conteudo.setLayout(new BoxLayout(conteudo, BoxLayout.Y_AXIS));
+		conteudo.setBackground(new Color(17, 24, 38));
+		conteudo.setBorder(new EmptyBorder(10, 25, 20, 25));
 
-        JButton btnEncerrar = new JButton("ENCERRADO");
-        btnEncerrar.setBounds(200, 365, 160, 40);
-        btnEncerrar.setBackground(new Color(50, 200, 150));
-        btnEncerrar.setForeground(Color.BLACK);
-        btnEncerrar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnEncerrar.setFocusPainted(false);
-        activeCard.add(btnEncerrar);
+		JScrollPane scroll = new JScrollPane(conteudo);
+		scroll.setBorder(null);
+		mainPanel.add(scroll, BorderLayout.CENTER);
 
-        //----------------------------------------------
-        // Lista de pendentes
-        //----------------------------------------------
-        JLabel pendTitle = new JLabel("Casos Pendentes");
-        pendTitle.setForeground(new Color(255, 170, 50));
-        pendTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        pendTitle.setBounds(20, 490, 300, 40);
-        root.add(pendTitle);
+		// ----------------- SEÇÕES -----------------
+		conteudo.add(criarTituloSecao("Casos Ativos"));
+		conteudo.add(Box.createVerticalStrut(10));
+		painelAtivos = new JPanel();
+		painelAtivos.setLayout(new BoxLayout(painelAtivos, BoxLayout.Y_AXIS));
+		painelAtivos.setOpaque(false);
+		conteudo.add(painelAtivos);
 
-        JPanel listContainer = new JPanel(new BorderLayout());
-        listContainer.setBounds(20, 530, 1250, 170);
-        listContainer.setBackground(new Color(22, 25, 40));
-        listContainer.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
-        root.add(listContainer);
+		conteudo.add(Box.createVerticalStrut(50));
+		conteudo.add(criarTituloSecao("Casos Pendentes"));
+		listaPendentes = new JPanel();
+		listaPendentes.setLayout(new BoxLayout(listaPendentes, BoxLayout.Y_AXIS));
+		listaPendentes.setOpaque(false);
+		conteudo.add(listaPendentes);
 
-        JScrollPane jsp = new JScrollPane();
-        jsp.setBorder(null);
-        listContainer.add(jsp, BorderLayout.CENTER);
+		conteudo.add(Box.createVerticalStrut(50));
+		conteudo.add(criarTituloSecao("Casos Encerrados"));
+		listaEncerrados = new JPanel();
+		listaEncerrados.setLayout(new BoxLayout(listaEncerrados, BoxLayout.Y_AXIS));
+		listaEncerrados.setOpaque(false);
+		conteudo.add(listaEncerrados);
 
-        listPanel = new JPanel(null);
-        listPanel.setBackground(new Color(22, 25, 40));
-        jsp.setViewportView(listPanel);
+		// ----------------- CARREGAR DADOS -----------------
+		try {
+			DisappearanceListDao dao = new DisappearanceListDao();
+			desaparecidos = dao.listarTodos();
+			carregarCards();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        frame.setVisible(true);
-    }
+		setVisible(true);
+	}
 
-    //----------------------------------------------------------
-    // CARREGA DO DAO
-    //----------------------------------------------------------
-    private void carregarDados() {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                DisappearanceListDao dao = new DisappearanceListDao();
-                List<DisappearanceListItem> lista = dao.listarTodos();
+	private JLabel criarTituloSecao(String txt) {
+		JLabel label = new JLabel(txt);
+		label.setFont(new Font("Arial", Font.BOLD, 24));
+		label.setForeground(new Color(255, 184, 76));
+		return label;
+	}
 
-                if (lista == null || lista.isEmpty()) {
-                    lblNome.setText("Nenhum caso encontrado");
-                    return;
-                }
+	private void carregarCards() {
+		painelAtivos.removeAll();
+		listaPendentes.removeAll();
+		listaEncerrados.removeAll();
 
-                // Mostra o primeiro como caso ativo
-                preencherAtivo(lista.get(0));
+		for (DisappearanceListItem d : desaparecidos) {
+			StatusRegister status = d.getStatus();
+			if (status == null)
+				status = StatusRegister.PENDENTE;
 
-                // Lista os outros abaixo
-                preencherLista(lista);
+			switch (status) {
+			case ANDAMENTO:
+				painelAtivos.add(criarCardAtivo(d));
+				painelAtivos.add(Box.createVerticalStrut(15));
+				break;
+			case PENDENTE:
+				listaPendentes.add(criarCardAtivo(d));
+				listaPendentes.add(Box.createVerticalStrut(15));
+				break;
+			case ENCERRADO:
+				listaEncerrados.add(criarCard(d, "CASO ENCERRADO", new Color(100, 100, 100)));
+				listaEncerrados.add(Box.createVerticalStrut(15));
+				break;
+			}
+		}
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
+		revalidate();
+		repaint();
+	}
 
-    //----------------------------------------------------------
-    // PREENCHE O CARD PRINCIPAL
-    //----------------------------------------------------------
-    private void preencherAtivo(DisappearanceListItem item) {
+	// ----------------- CARD ATIVO/PENDENTE -----------------
+	private JPanel criarCardAtivo(DisappearanceListItem d) {
+		// Header com status
+		String titulo = "CASO ATIVO";
+		if (d.getStatus() == StatusRegister.PENDENTE)
+			titulo = "CASO PENDENTE";
 
-        lblNome.setText(item.getName());
+		JPanel card = new JPanel();
+		card.setLayout(null);
+		card.setPreferredSize(new Dimension(500, 380));
+		card.setMaximumSize(new Dimension(850, 380));
+		card.setBackground(new Color(22, 25, 40));
+		card.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
 
-        lblIdade.setText("<html>Idade<br><b>" + item.getAge() + "</b></html>");
+		// Header
+		JPanel header = new JPanel(null);
+		header.setBounds(0, 0, 500, 60);
+		header.setBackground(new Color(200, 60, 80));
+		JLabel lblTitle = new JLabel(titulo);
+		lblTitle.setForeground(Color.WHITE);
+		lblTitle.setFont(new Font("Arial", Font.BOLD, 18));
+		lblTitle.setBounds(20, 10, 450, 40);
+		header.add(lblTitle);
+		card.add(header);
 
-        lblData.setText("<html>Data<br><b>" +
-                (item.getDate() != null ? sdf.format(item.getDate()) : "—") +
-                "</b></html>");
+		// Nome grande
+		JLabel lblNome = new JLabel(d.getName());
+		lblNome.setForeground(Color.WHITE);
+		lblNome.setFont(new Font("Arial", Font.BOLD, 22));
+		lblNome.setBounds(20, 70, 450, 30);
+		card.add(lblNome);
 
-        lblLocal.setText(item.getLocation());
+		// Idade, gênero e físico
+		JLabel lblInfo = new JLabel("Idade: " + d.getAge() + " | Gênero: " + d.getGender());
+		lblInfo.setForeground(Color.WHITE);
+		lblInfo.setBounds(20, 105, 450, 25);
+		card.add(lblInfo);
 
-        lblDesc.setText(
-                item.getHeight() + "m • " +
-                item.getWeight() + "kg • " +
-                item.getGender()
-        );
+		JLabel lblFisico = new JLabel("Altura: " + d.getHeight() + " m | Peso: " + d.getWeight() + " kg | Cabelo: "
+				+ d.getHairColor() + " | Olhos: " + d.getEyeColor());
+		lblFisico.setForeground(Color.WHITE);
+		lblFisico.setBounds(20, 135, 450, 25);
+		card.add(lblFisico);
 
-        lblPhone.setText("Status: " + item.getStatus());
-    }
+		// Contato
+		JLabel lblContato = new JLabel("Contato: " + d.getContactName() + " | " + d.getContactPhone());
+		lblContato.setForeground(Color.WHITE);
+		lblContato.setBounds(20, 165, 450, 25);
+		card.add(lblContato);
 
-    //----------------------------------------------------------
-    // LISTA OS OUTROS CASOS
-    //----------------------------------------------------------
-    private void preencherLista(List<DisappearanceListItem> lista) {
+		// Local
+		JLabel lblLocal = new JLabel("Local: " + d.getLocation());
+		lblLocal.setForeground(Color.WHITE);
+		lblLocal.setBounds(20, 195, 450, 25);
+		card.add(lblLocal);
 
-        listPanel.removeAll();
+		// Contexto
+		JLabel lblDesc = new JLabel("<html>" + d.getDisappearanceContext() + "</html>");
+		lblDesc.setForeground(Color.LIGHT_GRAY);
+		lblDesc.setBounds(20, 225, 460, 60);
+		card.add(lblDesc);
 
-        int y = 10;
+		// Painel de botões
+		JPanel painelBotoes = new JPanel();
+		painelBotoes.setLayout(new GridLayout(2, 1, 0, 10));
+		painelBotoes.setOpaque(false);
+		painelBotoes.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        for (DisappearanceListItem item : lista) {
+		JButton btnPendente = new JButton("Marcar como Pendente");
+		btnPendente.setBackground(new Color(255, 180, 50));
+		btnPendente.setForeground(Color.BLACK);
+		btnPendente.setFont(new Font("Arial", Font.BOLD, 16));
+		btnPendente.setFocusPainted(false);
 
-            JPanel card = new JPanel(null);
-            card.setBackground(new Color(30, 33, 50));
-            card.setBounds(10, y, 1200, 60);
-            card.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 70)));
-            listPanel.add(card);
+		JButton btnEncerrado = new JButton("Encerrar Caso");
+		btnEncerrado.setBackground(new Color(200, 60, 80));
+		btnEncerrado.setForeground(Color.WHITE);
+		btnEncerrado.setFont(new Font("Arial", Font.BOLD, 16));
+		btnEncerrado.setFocusPainted(false);
 
-            JLabel lbl = new JLabel(
-                    item.getName() + " — " +
-                    item.getAge() + " anos — " +
-                    item.getLocation() + " — " +
-                    "Status: " + item.getStatus()
-            );
-            lbl.setForeground(Color.WHITE);
-            lbl.setBounds(20, 20, 900, 20);
-            card.add(lbl);
+		painelBotoes.add(btnPendente);
+		painelBotoes.add(btnEncerrado);
 
-            y += 70;
-        }
+		card.add(painelBotoes);
+		painelBotoes.setBounds(20, 295, 460, 70);
 
-        listPanel.setPreferredSize(new Dimension(1200, y + 10));
-        listPanel.revalidate();
-        listPanel.repaint();
-    }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LayoutNovo());
-    }
+		btnPendente.addActionListener(e -> {
+			d.setStatus(StatusRegister.PENDENTE); // atualiza localmente
+			try {
+				DisappearanceListDao dao = new DisappearanceListDao();
+				dao.atualizarStatusRegister(d.getIdRegister(), StatusRegister.PENDENTE); // atualiza no banco
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Erro ao atualizar status no banco!");
+			}
+			carregarCards(); // atualiza a interface
+		});
 
+		btnEncerrado.addActionListener(e -> {
+			d.setStatus(StatusRegister.ENCERRADO);
+			try {
+				DisappearanceListDao dao = new DisappearanceListDao();
+				dao.atualizarStatusRegister(d.getIdRegister(), StatusRegister.ENCERRADO);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Erro ao atualizar status no banco!");
+			}
+			carregarCards();
+		});
+
+		return card;
+	}
+
+	// ----------------- CARD SIMPLES -----------------
+	private JPanel criarCard(DisappearanceListItem d, String titulo, Color corHeader) {
+		JPanel card = new JPanel();
+		card.setLayout(null);
+		card.setPreferredSize(new Dimension(500, 380)); // de 300 para 380
+		card.setMaximumSize(new Dimension(850, 300));
+		card.setBackground(new Color(22, 25, 40));
+		card.setBorder(BorderFactory.createLineBorder(new Color(40, 40, 55), 2));
+
+		// Header
+		JPanel header = new JPanel(null);
+		header.setBounds(0, 0, 500, 60);
+		header.setBackground(corHeader);
+
+		JLabel lblTitle = new JLabel(titulo);
+		lblTitle.setForeground(Color.WHITE);
+		lblTitle.setFont(new Font("Arial", Font.BOLD, 18));
+		lblTitle.setBounds(20, 10, 450, 40);
+		header.add(lblTitle);
+
+		card.add(header);
+
+		// Nome grande
+		JLabel lblNome = new JLabel(d.getName());
+		lblNome.setForeground(Color.WHITE);
+		lblNome.setFont(new Font("Arial", Font.BOLD, 22));
+		lblNome.setBounds(20, 80, 450, 30);
+		card.add(lblNome);
+
+		// Idade, gênero e físico
+		JLabel lblInfo = new JLabel("Idade: " + d.getAge() + " | Gênero: " + d.getGender());
+		lblInfo.setForeground(Color.WHITE);
+		lblInfo.setBounds(20, 115, 450, 25);
+		card.add(lblInfo);
+
+		JLabel lblFisico = new JLabel("Altura: " + d.getHeight() + " m | Peso: " + d.getWeight() + " kg | Cabelo: "
+				+ d.getHairColor() + " | Olhos: " + d.getEyeColor());
+		lblFisico.setForeground(Color.WHITE);
+		lblFisico.setBounds(20, 145, 450, 25);
+		card.add(lblFisico);
+
+		// Contato
+		JLabel lblContato = new JLabel("Contato: " + d.getContactName() + " | " + d.getContactPhone());
+		lblContato.setForeground(Color.WHITE);
+		lblContato.setBounds(20, 175, 450, 25);
+		card.add(lblContato);
+
+		// Local
+		JLabel lblLocal = new JLabel("Local: " + d.getLocation());
+		lblLocal.setForeground(Color.WHITE);
+		lblLocal.setBounds(20, 205, 450, 25);
+		card.add(lblLocal);
+
+		// Descrição
+		JLabel lblDesc = new JLabel("<html>" + d.getDisappearanceContext() + "</html>");
+		lblDesc.setForeground(Color.LIGHT_GRAY);
+		lblDesc.setBounds(20, 235, 450, 60);
+		card.add(lblDesc);
+
+		return card;
+	}
 }
