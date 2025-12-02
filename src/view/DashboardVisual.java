@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 
 import dao.DashboardDao;
 
+import view.SearchMissingPersons;
+
 public class DashboardVisual extends JFrame {
 
     private DashboardDao dao;
@@ -67,24 +69,28 @@ public class DashboardVisual extends JFrame {
             btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btn.setBorder(BorderFactory.createEmptyBorder());
 
+
             switch (item) {
-                case "Novo Caso" -> btn.addActionListener(e -> SwingUtilities.invokeLater(() -> {
-                    RegisterPersonMissing tela = new RegisterPersonMissing();
-                    tela.abrir();
-                }));
-                case "Dashboard" -> btn.addActionListener(e -> SwingUtilities.invokeLater(() -> {
-                    new DashboardVisual();
-                    this.dispose();
-                }));
-                case "Busca Avançada" -> btn.addActionListener(e -> SwingUtilities.invokeLater(() -> {
-                    SearchMissingPersons busca = new SearchMissingPersons();
-                    busca.abrir();
-                }));
-            }
+
+            case "Novo Caso" -> btn.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+                RegisterPersonMissing tela = new RegisterPersonMissing();
+                tela.abrir();
+            }));
+
+            case "Dashboard" -> btn.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+                new DashboardVisual();
+                this.dispose();
+            }));
+
+        }
+
 
             sidebar.add(btn);
             y += 50;
         }
+        
+      
+
 
         // ================= PAINEL PRINCIPAL =================
         JPanel mainPanel = new JPanel(new BorderLayout());
