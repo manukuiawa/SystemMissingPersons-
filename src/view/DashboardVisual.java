@@ -28,7 +28,7 @@ public class DashboardVisual extends JFrame {
     public DashboardVisual() {
         dao = new DashboardDao();
 
-        setTitle("SCPD - Sistema de Controle de Pessoas Desaparecidas");
+        setTitle("Sistema de Controle de Pessoas Desaparecidas");
         setSize(1300, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -37,7 +37,7 @@ public class DashboardVisual extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.decode("#011826"));
 
-        // ================= SIDEBAR =================
+        //SideBar
         JPanel sidebar = new JPanel();
         sidebar.setPreferredSize(new Dimension(260, 750));
         sidebar.setBackground(new Color(25, 35, 45));
@@ -81,23 +81,41 @@ public class DashboardVisual extends JFrame {
                 new DashboardVisual();
                 this.dispose();
             }));
+            
+            case "Pessoas Desaparecidas" -> btn.addActionListener(e ->
+            SwingUtilities.invokeLater(() -> {
+                new ScreenDisappearance().setVisible(true);
+                this.dispose(); // se quiser fechar a tela atual igual ao Dashboard
+            }));
+            
+            case "Busca Avançada" -> btn.addActionListener(e ->
+            SwingUtilities.invokeLater(() -> {
+                JFrame tela = new JFrame("Busca Avançada");
+                tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tela.setSize(1100, 700);
+                tela.setLocationRelativeTo(null);
+
+                tela.setContentPane(new SearchMissingPersons());
+
+                tela.setVisible(true);
+
+                this.dispose();
+            })
+        );
 
         }
-
 
             sidebar.add(btn);
             y += 50;
         }
-        
-      
 
 
-        // ================= PAINEL PRINCIPAL =================
+        //Painel Principal
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(33, 43, 54));
         getContentPane().add(mainPanel, BorderLayout.CENTER);
 
-        // ===== HEADER =====
+        //Cabeçalho
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(40, 50, 60));
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -107,7 +125,7 @@ public class DashboardVisual extends JFrame {
         header.add(title, BorderLayout.WEST);
         mainPanel.add(header, BorderLayout.NORTH);
 
-        // ===== CARDS =====
+        //Banco
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         centerPanel.setBackground(new Color(33, 43, 54));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
