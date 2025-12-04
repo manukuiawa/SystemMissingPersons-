@@ -72,7 +72,7 @@ public class SearchMissingDao {
         try (Connection conn = baseDao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
-            // set params dinamicamente
+            
             for (int i = 0; i < params.size(); i++) {
                 Object p = params.get(i);
                 if (p instanceof Integer) stmt.setInt(i + 1, (Integer) p);
@@ -82,16 +82,16 @@ public class SearchMissingDao {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    // usa construtor vazio + setters (evita mismatch de assinatura)
+                   
                     DisappearanceListItem item = new DisappearanceListItem();
 
                     item.setIdPeoples(rs.getInt("id_peoples"));
                     item.setIdRegister(rs.getInt("id_register"));
-                    item.setPersonName(rs.getString("personName")); // atenção: exatamente personName
+                    item.setPersonName(rs.getString("personName")); 
                     item.setAge(rs.getInt("age"));
                     item.setGender(rs.getString("gender"));
 
-                    // height/weight podem ser null no DB -> tratar
+                    
                     double height = rs.getDouble("height");
                     if (rs.wasNull()) item.setHeight(0.0);
                     else item.setHeight(height);
@@ -108,7 +108,7 @@ public class SearchMissingDao {
                     item.setKinship(rs.getString("kinship"));
                     item.setCellphone(rs.getString("cellphone"));
 
-                    // converte o status vindo do DB (r.statusRegister)
+                    
                     item.setStatus(StatusRegister.fromString(rs.getString("statusRegister")));
 
                     lista.add(item);
