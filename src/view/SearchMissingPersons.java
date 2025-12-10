@@ -1,228 +1,195 @@
-
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import dao.SearchMissingDao;
+import model.DisappearanceListItem;
 
-public class SearchMissingPersons {
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
-	private JFrame frame;
-	private JPanel sidebar;
+public class SearchMissingPersons extends JPanel {
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchMissingPersons window = new SearchMissingPersons();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private final JTextField campoNome;
+    private final JTextField campoIdade;
+    private final JTextField campoAltura;
+    private final JTextField campoCabelo;
+    private final JTextField campoOlhos;
+    private final JTextField campoRoupas;
+    private final JTextField campoLocal;
 
-	/**
-	 * Create the application.
-	 */
-	public SearchMissingPersons() {
-		initialize();
-	}
+    private final JTable tabela;
+    private final DefaultTableModel modelo;
 
-	public void abrir() {
-		frame.setVisible(true);
-	}
+    private final SearchMissingDao dao;
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+    public SearchMissingPersons() {
 
-	private void initialize() {
-		// Frame principal
-		frame = new JFrame();
-		frame.setTitle("SCPD - Sistema de Controle de Pessoas Desaparecidas");
-		frame.setBounds(100, 100, 1300, 750);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(null);
-		frame.getContentPane().setBackground(Color.decode("#011826"));
+        this.dao = new SearchMissingDao();
 
-		// Sidebar
-		sidebar = new JPanel();
-		sidebar.setLayout(null);
-		sidebar.setBackground(new Color(25, 35, 45));
-		sidebar.setBounds(0, 0, 260, 750);
-		frame.getContentPane().add(sidebar);
+        setLayout(new BorderLayout(10, 10));
+        setBorder(new EmptyBorder(12, 12, 12, 12));
 
-		// Título
-		JLabel tituloSidebar = new JLabel("...", SwingConstants.CENTER);
-		tituloSidebar.setFont(new Font("Arial", Font.BOLD, 22));
-		tituloSidebar.setForeground(Color.WHITE);
-		tituloSidebar.setBounds(0, 20, 260, 30);
-		sidebar.add(tituloSidebar);
+        Color darkBg = new Color(33, 43, 54);
+        Color darkPanel = new Color(45,55,67);
+        Color textColor = new Color(230, 230, 230);
 
-		// Subtítulo
-		JLabel subtitulo = new JLabel("......", SwingConstants.CENTER);
-		subtitulo.setFont(new Font("Arial", Font.PLAIN, 12));
-		subtitulo.setForeground(new Color(180, 180, 180));
-		subtitulo.setBounds(0, 55, 260, 35);
-		sidebar.add(subtitulo);
+        setBackground(darkBg);
+        
+        JPanel topo = new JPanel(new GridLayout(4, 4, 10, 10));
+        topo.setBackground(darkPanel);
+        topo.setBorder(new LineBorder(new Color(70, 70, 70), 1, true));
 
-		// Botões do menu
-		String[] menu = { "Dashboard", "Pessoas Desaparecidas", "Busca Avançada", "Novo Caso" };
-		int y = 120;
-		for (String item : menu) {
-			JButton btn = new JButton(item);
-			btn.setBounds(15, y, 230, 40);
-			btn.setFocusPainted(false);
-			btn.setForeground(Color.WHITE);
-			btn.setBackground(new Color(25, 35, 45));
-			btn.setFont(new Font("Arial", Font.PLAIN, 14));
-			btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			btn.setBorder(BorderFactory.createEmptyBorder());
+        campoNome = criarCampo(darkPanel, textColor);
+        campoIdade = criarCampo(darkPanel, textColor);
+        campoAltura = criarCampo(darkPanel, textColor);
+        campoCabelo = criarCampo(darkPanel, textColor);
+        campoOlhos = criarCampo(darkPanel, textColor);
+        campoRoupas = criarCampo(darkPanel, textColor);
+        campoLocal = criarCampo(darkPanel, textColor);
 
-			btn.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					btn.setBackground(new Color(35, 50, 65));
-				}
+        adicionarCampo(topo, "Nome:", campoNome, textColor);
+        adicionarCampo(topo, "Idade:", campoIdade, textColor);
+        adicionarCampo(topo, "Altura:", campoAltura, textColor);
+        adicionarCampo(topo, "Cabelo:", campoCabelo, textColor);
+        adicionarCampo(topo, "Olhos:", campoOlhos, textColor);
+        adicionarCampo(topo, "Roupas:", campoRoupas, textColor);
+        adicionarCampo(topo, "Local:", campoLocal, textColor);
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-					btn.setBackground(new Color(25, 35, 45));
-				}
-			});
+        add(topo, BorderLayout.NORTH);
 
-			sidebar.add(btn);
-			y += 50;
-		}
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        painelBotoes.setBackground(darkBg);
 
-		JPanel mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setBackground(new Color(17, 24, 38));
-		mainPanel.setBounds(260, 0, 1040, 750);
-		frame.getContentPane().add(mainPanel);
+        JButton botaoPesquisar = criarBotao("Pesquisar", new Color(37, 150, 190));
+        JButton botaoLimpar = criarBotao("Limpar", new Color(200, 50, 70));
 
-		JPanel header = new JPanel(new BorderLayout());
-		header.setBackground(new Color(17, 24, 38));
-		header.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
+        painelBotoes.add(botaoPesquisar);
+        painelBotoes.add(botaoLimpar);
 
-		JLabel lblTitulo = new JLabel("Busca Avançada por Características");
-		lblTitulo.setForeground(Color.WHITE);
-		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		header.add(lblTitulo, BorderLayout.WEST);
+        add(painelBotoes, BorderLayout.SOUTH);
+        
+        modelo = new DefaultTableModel(new String[]{
+                "Nome", "Idade", "Gênero",
+                "Altura", "Peso", "Cabelo", "Olhos",
+                "Roupas", "Local", "Contexto",
+                "Parente/Contato", "Telefone", "Status"
+        }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
 
-		JPanel conteudo = new JPanel();
-		conteudo.setBackground(new Color(17, 24, 38));
-		conteudo.setLayout(new BoxLayout(conteudo, BoxLayout.Y_AXIS));
-		conteudo.setBorder(BorderFactory.createEmptyBorder(10, 25, 20, 25));
+        tabela = new JTable(modelo);
+        tabela.setRowHeight(26);
+        tabela.setShowGrid(false);
+        tabela.setIntercellSpacing(new Dimension(0, 0));
+        tabela.setAutoCreateRowSorter(true);
 
-		JPanel filtroCard = new JPanel();
-		filtroCard.setBackground(new Color(33, 43, 54));
-		filtroCard.setLayout(new BoxLayout(filtroCard, BoxLayout.Y_AXIS));
-		filtroCard.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        tabela.setBackground(darkPanel);
+        tabela.setForeground(textColor);
+        tabela.setSelectionBackground(new Color(60, 60, 60));
+        tabela.setSelectionForeground(Color.WHITE);
 
-		JLabel tituloFiltro = new JLabel("Busca Avançada");
-		tituloFiltro.setForeground(Color.WHITE);
-		tituloFiltro.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		filtroCard.add(tituloFiltro);
-		filtroCard.add(Box.createVerticalStrut(10));
+        tabela.getTableHeader().setBackground(new Color(55, 55, 55));
+        tabela.getTableHeader().setForeground(Color.WHITE);
+        tabela.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
 
-		// inputs
-		filtroCard.add(criarLinhaCampos(new String[] { "Altura", "Cor do Cabelo", "Cor dos Olhos" }));
-		filtroCard.add(Box.createVerticalStrut(20));
-		filtroCard.add(criarLinhaCampos(new String[] { "Tatuagens", "Cicatrizes", "Outros sinais" }));
-		filtroCard.add(Box.createVerticalStrut(20));
-		filtroCard.add(criarLinhaCampos(new String[] { "Cor da roupa", "Tipo de roupa", "Acessórios" }));
-		filtroCard.add(Box.createVerticalStrut(5));
+        JScrollPane scroll = new JScrollPane(tabela);
+        scroll.setBorder(new LineBorder(new Color(70, 70, 70), 1, true));
+        scroll.getViewport().setBackground(darkPanel);
 
-		JPanel botoesBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
-		botoesBusca.setBackground(new Color(33, 43, 54));
-		JButton btnBuscar = criarBotaoTopo("Buscar", new Color(0, 123, 255));
-		JButton btnLimpar = criarBotaoTopo("Limpar", new Color(244, 45, 48));
-		botoesBusca.add(btnBuscar);
-		botoesBusca.add(btnLimpar);
+        add(scroll, BorderLayout.CENTER);
 
-		filtroCard.add(botoesBusca);
+        // Ações dos botões
+        botaoPesquisar.addActionListener(e -> pesquisar());
+        botaoLimpar.addActionListener(e -> limparCampos());
+    }
 
-		conteudo.add(filtroCard);
-		conteudo.add(Box.createVerticalStrut(25));
+    
+    private JTextField criarCampo(Color bg, Color fg) {
+        JTextField campo = new JTextField();
+        campo.setBorder(new LineBorder(new Color(120, 120, 120), 1, true));
+        campo.setBackground(bg);
+        campo.setForeground(fg);
+        campo.setCaretColor(Color.WHITE);
+        return campo;
+    }
 
-		JPanel resultadosCard = new JPanel(new BorderLayout());
-		resultadosCard.setBackground(new Color(33, 43, 54));
-		resultadosCard.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
+    
+    private void adicionarCampo(JPanel painel, String texto, JTextField campo, Color textColor) {
+        JLabel label = new JLabel(texto);
+        label.setForeground(textColor);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        painel.add(label);
+        painel.add(campo);
+    }
 
-		JLabel tituloResultados = new JLabel("Resultados da Busca");
-		tituloResultados.setForeground(Color.WHITE);
-		tituloResultados.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		resultadosCard.add(tituloResultados, BorderLayout.NORTH);
+  
+    private JButton criarBotao(String texto, Color cor) {
+        JButton botao = new JButton(texto);
+        botao.setFocusPainted(false);
+        botao.setBackground(cor);
+        botao.setForeground(Color.WHITE);
+        botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        botao.setBorder(new EmptyBorder(7, 14, 7, 14));
+        return botao;
+    }
 
-		JLabel iconeBusca = new JLabel("🔍", SwingConstants.CENTER);
-		iconeBusca.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
-		iconeBusca.setForeground(new Color(150, 150, 150));
+  
+    private void pesquisar() {
+        String nome = campoNome.getText().trim();
+        String idade = campoIdade.getText().trim();
+        String altura = campoAltura.getText().trim();
+        String cabelo = campoCabelo.getText().trim();
+        String olhos = campoOlhos.getText().trim();
+        String roupas = campoRoupas.getText().trim();
+        String local = campoLocal.getText().trim();
 
-		JLabel textoResultados = new JLabel("Utilize os filtros acima para realizar uma busca", SwingConstants.CENTER);
-		textoResultados.setForeground(new Color(150, 150, 150));
-		textoResultados.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        List<DisappearanceListItem> lista = dao.pesquisar(
+                nome, idade, altura, cabelo, olhos, roupas, local
+        );
 
-		JPanel centro = new JPanel(new BorderLayout());
-		centro.setOpaque(false);
-		centro.add(iconeBusca, BorderLayout.CENTER);
-		centro.add(textoResultados, BorderLayout.SOUTH);
-		resultadosCard.add(centro, BorderLayout.CENTER);
+        modelo.setRowCount(0);
 
-		conteudo.add(resultadosCard);
+        if (lista == null || lista.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nenhum dado encontrado.\nTente novamente!",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
 
-		JScrollPane scroll = new JScrollPane(conteudo);
-		scroll.setBorder(null);
-		scroll.getVerticalScrollBar().setUnitIncrement(16);
-		mainPanel.add(scroll, BorderLayout.CENTER);
-	}
+        for (DisappearanceListItem item : lista) {
+            modelo.addRow(new Object[]{
+                    item.getPersonName(),
+                    item.getAge(),
+                    item.getGender(),
+                    item.getHeight(),
+                    item.getWeight(),
+                    item.getHairColor(),
+                    item.getEyesColor(),
+                    item.getClothesDisappearance(),
+                    item.getLocation(),
+                    item.getContextDisappearance(),
+                    item.getKinship(),
+                    item.getCellphone(),
+                    item.getStatus()
+            });
+        }
+    }
 
-	private JPanel criarLinhaCampos(String[] nomes) {
-		JPanel linha = new JPanel(new GridLayout(1, nomes.length, 15, 0));
-		linha.setBackground(new Color(26, 36, 46));
-
-		for (String nome : nomes) {
-			JTextField campo = new JTextField(nome);
-			campo.setBackground(new Color(25, 35, 45));
-			campo.setForeground(new Color(200, 200, 200));
-			campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-			campo.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
-			linha.add(campo);
-		}
-		return linha;
-	}
-
-	private JButton criarBotaoTopo(String texto, Color cor) {
-		JButton btn = new JButton(texto);
-		btn.setFocusPainted(false);
-		btn.setBackground(cor);
-		btn.setForeground(Color.WHITE);
-		btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
-		btn.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
-		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		return btn;
-	}
-
+    private void limparCampos() {
+        campoNome.setText("");
+        campoIdade.setText("");
+        campoAltura.setText("");
+        campoCabelo.setText("");
+        campoOlhos.setText("");
+        campoRoupas.setText("");
+        campoLocal.setText("");
+        modelo.setRowCount(0);
+    }
 }
