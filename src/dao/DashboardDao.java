@@ -22,7 +22,7 @@ public class DashboardDao extends BaseDao {
         return 0;
     }
 
-    // Contar casos por status (PENDENTE, ANDAMENTO, ENCERRADO)
+    // Contar casos por status 
     public int contarCasosPorStatus(String status) {
         String sql = "SELECT COUNT(*) AS total FROM register WHERE statusRegister = ?";
         try (Connection conn = getConnection();
@@ -39,3 +39,5 @@ public class DashboardDao extends BaseDao {
         return 0;
     }
 }
+
+
