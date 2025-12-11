@@ -108,4 +108,4 @@ A ferramenta foi pensada para oferecer:
 ## 👩‍💻 Desenvolvido por
 
 **Manuella de Fátima Kuiawa** – responsável pelo desenvolvimento do sistema, criação das telas e implementação do código.  
-**Evelyn de Souza** – responsável pela produção, organização e estruturação do documento acadêmico que acompanha o projeto.
+**Evelyn de Souza** – responsável pela produção, organização e estruturação do documento acadêmico que acompanha o projeto e criação do modelo lógico e conceitual do banco de dados.
